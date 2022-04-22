@@ -15,7 +15,7 @@ export default function GenerateChallenge() {
 
   const generator = async (count) => {
     // Fetch the data from the API
-    const response = await apiFetch("/api/problem/random/" + count);
+    const response = await apiFetch("/problem/random/" + count);
     return await response.json();
   };
 

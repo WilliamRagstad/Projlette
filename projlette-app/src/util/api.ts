@@ -1,7 +1,7 @@
 import { PRODUCTION_MODE } from "../index";
 
 const endpoints = {
-	dev: "http://localhost:8000/",
+	dev: `http://${window.location.host.split(':')[0] || "localhost"}:8000/`,
 	prod: "https://api.projlette.com/",
 }
 
