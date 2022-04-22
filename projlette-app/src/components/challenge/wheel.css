@@ -1,0 +1,21 @@
+.wheel {
+    overflow: hidden;
+    border: solid 1px #a1a1a1;
+    /* box-shadow: 0 4px 7px #0003; */
+    box-shadow: -1px 8px 12px -6px #7ea9cd; /* #48c78e; */
+    padding: 12px 0;
+    margin: 20px 0;
+}
+
+.wheel > .segments {
+    display: flex;
+    align-items: center;
+    transition: transform 1s ease-out;
+}
+
+.wheel > .segments > .segment {
+    padding: 0.5em;
+    /* margin: 0.5em; */
+    border: solid 1px #dbdbdb;
+    border-right: none;
+}
