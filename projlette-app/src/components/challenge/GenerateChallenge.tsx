@@ -73,9 +73,9 @@ export default function GenerateChallenge() {
     );
   };
   const [start, setStart] = useState(false);
-  const onDone = (winner) => {
+  const onDone = (winner, index) => {
     setStart(false);
-    console.log("The winner is: ", winner);
+    console.log("The winner is: ", index, '-', winner);
   };
   return (
     <div id="generate">
@@ -110,6 +110,8 @@ export default function GenerateChallenge() {
               shouldStart={start}
               segmentComponent={segmentComponent}
               segmentWidth={150}
+			  spinDuration={2000}
+			  spinLengthMax={5000}
             />
             <div className="buttons is-centered">
               <button

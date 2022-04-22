@@ -6,12 +6,13 @@
     box-shadow: 0px 12px 12px -8px #7ea9cd; /* #48c78e; */
     padding: 12px 0;
     margin: 20px 0;
+    --spin-duration: 1000ms;
 }
 
 .wheel > .segments {
     display: flex;
     align-items: center;
-    transition: transform 1s ease-out;
+    transition: transform var(--spin-duration) ease-out;
 }
 
 .wheel > .segments > .segment {
