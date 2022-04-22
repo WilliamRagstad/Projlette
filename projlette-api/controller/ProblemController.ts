@@ -10,6 +10,7 @@ export default class ProblemController extends IController {
 
 	@Endpoint("GET", "/random/:count")
 	randomProblems({ count }: Params, { response }: Context) {
+		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
 		// const problems = await this.problemService.getRandomProblems(count);
 		const problems = [
 			{
@@ -76,8 +77,6 @@ export default class ProblemController extends IController {
 		for (let i = 0; i < parseInt(count); i++) {
 			result.push(problems[Math.floor(Math.random() * problems.length)]);
 		}
-		ok(response, {
-			problems: result
-		});
+		ok(response, result);
 	}
 }
