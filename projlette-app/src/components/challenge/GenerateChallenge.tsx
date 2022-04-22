@@ -53,12 +53,14 @@ export default function GenerateChallenge() {
   };
   return (
     <div id="generate">
-      <h1 className="title">Generate Challenge</h1>
-      <h2 className="subtitle">
-        Generate a set of new programming project challenges that can be used to
-        test and improve your skills. Spin the wheel to randomly select a
-        challenge from the list of existing challenges.
-      </h2>
+      <div className="block">
+        <h1 className="title">Generate Challenge</h1>
+        <h2 className="subtitle">
+          Generate a set of new programming project challenges that can be used
+          to test and improve your skills. Spin the wheel to randomly select a
+          challenge from the list of existing challenges.
+        </h2>
+      </div>
       <div className="block">
         <h1 className="title">Goal</h1>
         <h2 className="subtitle">
@@ -69,7 +71,7 @@ export default function GenerateChallenge() {
           skills.
         </h2>
       </div>
-		<br/>
+      <br />
       <div className="columns is-centered">
         <div className="column is-two-thirds">
           <div className="box">
