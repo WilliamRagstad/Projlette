@@ -1,7 +1,7 @@
 // Iterator Pattern
 
-interface IIterator {
-  next(): IAggregate;
+interface IIterator<T> {
+  next(): T;
   // Return the object in collection
   hasNext(): boolean;
   // Returns Boolean whether at end of collection or not
@@ -12,13 +12,13 @@ interface IIterator {
  * @implements IIterator
  * @description Iterator for infinitely preload and cache items from a source
  */
-export default class PreloadingIterator implements IIterator {
-  private collection: IAggregate[];
+export default class PreloadingIterator<T> implements IIterator<T> {
+  private collection: T[];
   private position: number;
-  private generator: (count) => IAggregate[];
+  private generator: (count) => T[];
   private chunkSize: number;
 
-  constructor(generator: (count) => IAggregate[], chunkSize: number) {
+  constructor(generator: (count) => T[], chunkSize: number) {
     this.collection = [];
     this.position = 0;
     this.generator = generator;
@@ -29,7 +29,7 @@ export default class PreloadingIterator implements IIterator {
     this.collection = this.collection.concat(this.generator(count));
   }
 
-  next(): IAggregate {
+  next(): T {
     if (this.position >= this.collection.length - 1 - this.chunkSize) {
       this.preloadCache(this.chunkSize);
     }
@@ -42,11 +42,11 @@ export default class PreloadingIterator implements IIterator {
     return true;
   }
 
-  get(index: number): IAggregate {
+  get(index: number): T {
     return this.collection[index];
   }
 
-  map(callback: (item: IAggregate) => IAggregate): IAggregate[] {
+  map<K>(callback: (item: T, index?: number) => K): K[] {
     return this.collection.map(callback);
   }
 }

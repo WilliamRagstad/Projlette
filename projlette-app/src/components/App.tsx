@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 // @ts-ignore
 import AllChallenges from "./challenge/AllChallenges.tsx";
 // @ts-ignore

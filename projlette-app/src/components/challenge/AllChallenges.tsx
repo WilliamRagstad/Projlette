@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export default function AllChallenges() {
 	return (<div id="all">
 	<h1 className="title">All Challenges</h1>

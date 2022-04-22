@@ -1,5 +1,6 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
-import PreloadingIterator from "./PreloadingIterator.ts";
+import PreloadingIterator from "./PreloadingIterator";
 import "./wheel.css";
 
 export default function GenerateChallenge() {
@@ -135,7 +136,7 @@ function Wheel<T>({
   segmentComponent,
   segmentWidth,
 }: {
-  segmentIterator: PreloadingIterator;
+  segmentIterator: PreloadingIterator<T>;
   onDone: (winner: T) => void;
   start: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   segmentComponent: (segment: T, index: number) => JSX.Element;
@@ -143,6 +144,7 @@ function Wheel<T>({
 }) {
   const [spinning, setSpinning] = useState(false);
   const [prevOffset, setPrevOffset] = useState(0);
+  const [segments, setSegments] = useState<T[]>([]);
 
   const wheelDiv = () => document.getElementById("wheel-generate");
   const segmentsDiv = () => wheelDiv().childNodes[0] as HTMLDivElement;
@@ -178,7 +180,13 @@ function Wheel<T>({
       setPrevOffset(nextOffset);
       setSpinning(false);
       start[1](false);
-      onDone(getSelectedSegment()); // TODO: Fix this
+	  const selected = getSelectedSegment();
+	  if (selected === undefined) {
+		  throw new Error("No segment selected");
+	  }
+	  debugger
+	  const index = parseInt(selected.getAttribute("data-index"));
+	  onDone(segments[index]);
     }, 1000);
   };
 
