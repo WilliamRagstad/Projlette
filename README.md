@@ -12,4 +12,4 @@ Projlette is a programming game that you can play alone or with your friends!
 Randomly generate different challenges and solve the problems to the very best of your ability.
 The goal is to evolve your programming skills and become a better programmer, as well as having fun!
 
-### Play the game on [projlette.com](https://projlette.com)!
+### Play the game on [projlette.com](http://projlette.com)!
