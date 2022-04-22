@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import PreloadingIterator from "./PreloadingIterator";
-import "./wheel.css";
+import Wheel from "./Wheel";
 
 export default function GenerateChallenge() {
   const segments = [
@@ -42,10 +41,8 @@ export default function GenerateChallenge() {
     "#34A24F",
     "#F9AA1F",
   ];
-  const onDone = (winner) => {
-    console.log("The winner is: ", winner);
-  };
 
+  // Temporary generator
   let generatorIndex = 0;
   const generator = (count) => {
     // TODO: Fetch the data from the API
@@ -55,8 +52,7 @@ export default function GenerateChallenge() {
     }
     return result;
   };
-  const iterator = new PreloadingIterator(generator, 5);
-  iterator.preloadCache();
+
   const segmentComponent = (problem, index) => {
     return (
       <div
@@ -76,7 +72,11 @@ export default function GenerateChallenge() {
       </div>
     );
   };
-  const startState = useState(false);
+  const [start, setStart] = useState(false);
+  const onDone = (winner) => {
+    setStart(false);
+    console.log("The winner is: ", winner);
+  };
   return (
     <div id="generate">
       <h1 className="title">Generate Challenge</h1>
@@ -104,17 +104,20 @@ export default function GenerateChallenge() {
               have been given.
             </p>
             <Wheel
-              segmentIterator={iterator}
+              segmentGenerator={generator}
+              initialSegmentCount={5}
               onDone={onDone}
-              start={startState}
+              shouldStart={start}
               segmentComponent={segmentComponent}
-			  segmentWidth={150}
+              segmentWidth={150}
             />
             <div className="buttons is-centered">
               <button
-                className={"button is-success is-large is-fullwidth is-rounded " +
-                  (startState[0] ? "is-loading" : "")}
-                onClick={() => startState[1](true)}
+                className={
+                  "button is-success is-large is-fullwidth is-rounded " +
+                  (start ? "is-loading" : "")
+                }
+                onClick={() => setStart(true)}
               >
                 <span className="icon" style={{ marginRight: 5 }}>
                   <i className="fas fa-sync"></i>
@@ -124,87 +127,6 @@ export default function GenerateChallenge() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function Wheel<T>({
-  segmentIterator,
-  onDone,
-  start,
-  segmentComponent,
-  segmentWidth,
-}: {
-  segmentIterator: PreloadingIterator<T>;
-  onDone: (winner: T) => void;
-  start: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-  segmentComponent: (segment: T, index: number) => JSX.Element;
-  segmentWidth: number;
-}) {
-  const [spinning, setSpinning] = useState(false);
-  const [prevOffset, setPrevOffset] = useState(0);
-  const [segments, setSegments] = useState<T[]>([]);
-
-  const wheelDiv = () => document.getElementById("wheel-generate");
-  const segmentsDiv = () => wheelDiv().childNodes[0] as HTMLDivElement;
-  const setOffset = (offset: number) =>
-    segmentsDiv().style.transform = `translateX(-${offset}px)`;
-  const getSelectedSegment = () => {
-    const br = wheelDiv().getBoundingClientRect();
-    const elms = document.elementsFromPoint(
-      br.left + br.width / 2,
-      br.top + br.height / 2,
-    );
-    for (const e of elms) {
-      if (e.classList.contains("segment")) {
-        return e;
-      }
-    }
-    return undefined;
-  };
-  const doSpin = () => {
-    if (spinning) return;
-    setSpinning(true);
-
-    const nextOffset = prevOffset + Math.random() * 1000 + 500;
-	debugger;
-	const passingSegments = (nextOffset - prevOffset) / segmentWidth;
-	console.log("Passing segments: ", passingSegments);
-	for (let i = 0; i < passingSegments; i++) {
-		segmentIterator.next();
-	}
-    setOffset(nextOffset);
-
-    setTimeout(() => {
-      setPrevOffset(nextOffset);
-      setSpinning(false);
-      start[1](false);
-	  const selected = getSelectedSegment();
-	  if (selected === undefined) {
-		  throw new Error("No segment selected");
-	  }
-	  debugger
-	  const index = parseInt(selected.getAttribute("data-index"));
-	  onDone(segments[index]);
-    }, 1000);
-  };
-
-  if (start[0]) {
-	  doSpin();
-	}
-//   for (let i = 0; i < 1; i++) {
-//     segmentIterator.next();
-//   }
-
-  return (
-    <div id="wheel-generate" className="wheel">
-      <div className="segments">
-        {segmentIterator.map((segment, index) => (
-          <div className="segment" key={index}>
-            {segmentComponent(segment, index)}
-          </div>
-        ))}
       </div>
     </div>
   );

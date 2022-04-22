@@ -1,8 +1,9 @@
 .wheel {
+    position: relative;
     overflow: hidden;
     border: solid 1px #a1a1a1;
     /* box-shadow: 0 4px 7px #0003; */
-    box-shadow: -1px 8px 12px -6px #7ea9cd; /* #48c78e; */
+    box-shadow: 0px 12px 12px -8px #7ea9cd; /* #48c78e; */
     padding: 12px 0;
     margin: 20px 0;
 }
@@ -18,4 +19,16 @@
     /* margin: 0.5em; */
     border: solid 1px #dbdbdb;
     border-right: none;
+}
+
+.wheel > .arrow {
+    --size: 30px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    background-color: red;
 }
