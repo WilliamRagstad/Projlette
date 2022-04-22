@@ -1,0 +1,12 @@
+{
+  "deno.enable": true,
+  "deno.enablePaths": [
+    "projlette-api",
+  ],
+  "[typescript]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[typescriptreact]": {
+      "editor.defaultFormatter": "denoland.vscode-deno"
+  }
+}
