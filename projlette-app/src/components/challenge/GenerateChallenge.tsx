@@ -1,38 +1,9 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { apiFetch } from "../../util/api";
 import Wheel from "./Wheel";
 
 export default function GenerateChallenge() {
-  const segments = [
-    "better luck next time",
-    "won 70",
-    "won 10",
-    "better luck next time",
-    "won 2",
-    "won uber pass",
-    "better luck next time",
-    "won a voucher",
-    "won 10",
-    "better luck next time",
-    "won 2",
-    "won uber pass",
-    "better luck next time",
-    "won a voucher",
-    "won a voucher",
-    "won 10",
-    "better luck next time",
-    "won 2",
-    "won uber pass",
-    "better luck next time",
-    "won a voucher",
-    "won a voucher",
-    "won 10",
-    "better luck next time",
-    "won 2",
-    "won uber pass",
-    "better luck next time",
-    "won a voucher",
-  ];
   const colors = [
     "#EE4040",
     "#F0CF50",
@@ -42,40 +13,43 @@ export default function GenerateChallenge() {
     "#F9AA1F",
   ];
 
-  // Temporary generator
-  let generatorIndex = 0;
-  const generator = (count) => {
-    // TODO: Fetch the data from the API
-    const result = [];
-    for (let i = 0; i < count; i++) {
-      result.push(segments[generatorIndex++ % segments.length]);
-    }
-    return result;
+  const generator = async (count) => {
+    // Fetch the data from the API
+    const response = await apiFetch("/api/problem/random/" + count);
+    return await response.json();
   };
 
+  const segmentWidth = 180;
+  const segmentHeight = 100;
   const segmentComponent = (problem, index) => {
     return (
       <div
         className="segment-body"
         style={{
-          width: 150,
-          height: 100,
+          width: segmentWidth,
+          height: segmentHeight,
         }}
       >
-        <div
-          className="segment-title"
-          style={{ color: colors[index % colors.length] }}
-        >
-          {problem}
+        <div className="segment-title">
+          <b>
+            <span style={{ color: colors[index % colors.length] }}>
+              {problem.id}
+            </span>{" "}
+            {problem.title}
+          </b>
         </div>
-        <div className="segment-description">{problem}</div>
+        <div className="segment-description">{problem.description}</div>
       </div>
     );
   };
   const [start, setStart] = useState(false);
   const onDone = (winner, index) => {
     setStart(false);
-    console.log("The winner is: ", index, '-', winner);
+    console.log("The winner is: ", index, "-", winner);
+  };
+  const onFail = (msg) => {
+    setStart(false);
+    console.log("Failed: ", msg);
   };
   return (
     <div id="generate">
@@ -95,8 +69,9 @@ export default function GenerateChallenge() {
           skills.
         </h2>
       </div>
+		<br/>
       <div className="columns is-centered">
-        <div className="column is-half">
+        <div className="column is-two-thirds">
           <div className="box">
             <h1 className="title">Wheel of Challenges</h1>
             <p>
@@ -105,13 +80,14 @@ export default function GenerateChallenge() {
             </p>
             <Wheel
               segmentGenerator={generator}
-              initialSegmentCount={5}
+              initialSegmentCount={20}
               onDone={onDone}
+              onFail={onFail}
               shouldStart={start}
               segmentComponent={segmentComponent}
-              segmentWidth={150}
-			  spinDuration={2000}
-			  spinLengthMax={5000}
+              segmentWidth={segmentWidth}
+              spinDuration={2000}
+              spinLengthMax={4000}
             />
             <div className="buttons is-centered">
               <button

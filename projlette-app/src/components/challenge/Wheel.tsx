@@ -6,6 +6,7 @@ export default function Wheel<T>({
 	segmentGenerator,
 	initialSegmentCount,
 	onDone,
+	onFail,
 	shouldStart,
 	segmentComponent,
 	segmentWidth,
@@ -14,9 +15,10 @@ export default function Wheel<T>({
 	spinLengthMin = 500,
 	spinLengthMax = 1500,
   }: {
-	segmentGenerator: (count) => T[];
+	segmentGenerator: (count) => Promise<T[]>;
 	initialSegmentCount: number;
 	onDone: (winner: T, index?: number) => void;
+	onFail: (msg: string) => void;
 	shouldStart: boolean;
 	segmentComponent: (segment: T, index: number) => JSX.Element;
 	segmentWidth: number;
@@ -27,14 +29,36 @@ export default function Wheel<T>({
   }) {
 	const [spinning, setSpinning] = useState(false);
 	const [prevOffset, setPrevOffset] = useState(0);
-	const [segments, setSegments] = useState<T[]>(
-	  segmentGenerator(initialSegmentCount)
-	);
+	const [segments, setSegments] = useState<T[]>([]);
+	const [segmentsPromise, setSegmentsPromise] = useState(null);
+
+	const preloadSegments = (count) => {
+		if (count > 0 && !segmentsPromise) {
+			setSegmentsPromise(segmentGenerator(count));
+		}
+	}
+
+	// Initial preload of first set of segments
+	useEffect(() => {
+		preloadSegments(initialSegmentCount);
+	}, []);
+
+	// Handle promise when new segments are fetched
+	useEffect(() => {
+		if (segmentsPromise) {
+			segmentsPromise.then((newSegments) => {
+				console.log("New segments: ", newSegments);
+				setSegments([...segments, ...newSegments]);
+				setSegmentsPromise(null);
+			});
+		}
+	}, [segmentsPromise]);
+
 	const wheelDiv = () => document.getElementById("wheel-generate");
 	const segmentsDiv = () => wheelDiv().childNodes[0] as HTMLDivElement;
 	const setOffset = (offset: number) =>
 	  (segmentsDiv().style.transform = `translateX(-${offset}px)`);
-	const getSelectedSegment = () => {
+	const selectedSegment = () => {
 	  const br = wheelDiv().getBoundingClientRect();
 	  const elms = document.elementsFromPoint(
 		br.left + br.width / 2,
@@ -47,11 +71,7 @@ export default function Wheel<T>({
 	  }
 	  return undefined;
 	};
-	const preloadSegments = (count) => {
-		const newSegments = [...segments, ...segmentGenerator(count)];
-		setSegments(newSegments);
-		return newSegments;
-	}
+	const getSegments = () => segments;
 	const doSpin = () => {
 	  if (spinning) return;
 	  setSpinning(true);
@@ -59,23 +79,28 @@ export default function Wheel<T>({
 	  const nextOffset = prevOffset + Math.random() * (spinLengthMax - spinLengthMin) + spinLengthMin;
 	  const passingSegments = (nextOffset - prevOffset) / segmentWidth;
 	  console.log("Passing segments: ", passingSegments);
-	  const newSegments = preloadSegments(Math.floor(passingSegments));
+	  preloadSegments(Math.floor(passingSegments));
 	  setOffset(nextOffset);
 
 	  setTimeout(() => {
 		setPrevOffset(nextOffset);
 		setSpinning(false);
-		const selected = getSelectedSegment();
+
+		const selected = selectedSegment();
 		if (selected === undefined) {
-		  throw new Error("No segment selected");
+			onFail("No segment selected");
+			return;
 		}
 		const index = parseInt(selected.getAttribute("data-index"));
-		if (index === undefined || newSegments[index] === undefined) return;
-		onDone(newSegments[index], index);
+		if (index === undefined || segments[index] === undefined) {
+			onFail("index or the segment at the index is undefined");
+			return;
+		}
+		onDone(segments[index], index);
 	  }, spinDuration);
 	};
 
-	if (shouldStart) {
+	if (shouldStart && !spinning) {
 		doSpin();
 	}
 	//   for (let i = 0; i < 1; i++) {
