@@ -1,5 +1,6 @@
 import { Service } from "https://deno.land/x/knight@2.3.0/mod.ts";
 import Problem, { Difficulty } from "../model/Problem.ts";
+import { readFromLocalFile, writeToLocalFile } from "../util/fileSync.ts";
 
 export default Service(
   class ProblemService {
@@ -11,24 +12,13 @@ export default Service(
     private previewProblems: Problem[];
     constructor() {
       // Load official problems
-      this.problems = this.readFromLocalFile(this.problemsFilepath);
+      this.problems = readFromLocalFile(this.problemsFilepath);
       // All official problems are approved by default
       this.problems.forEach((problem) => problem.approved = true);
       // Load preview problems
-      this.previewProblems = this.readFromLocalFile(
+      this.previewProblems = readFromLocalFile(
         this.previewProblemsFilepath,
       );
-    }
-
-    private readFromLocalFile(path: string) {
-      const file = Deno.readFileSync(path);
-      const data = new TextDecoder("utf-8").decode(file);
-      return JSON.parse(data);
-    }
-
-    private writeToLocalFile(path: string, data: Problem[]) {
-      const json = JSON.stringify(data);
-      Deno.writeFileSync(path, new TextEncoder().encode(json));
     }
 
     public randomProblems(count: number, includePreview: boolean) {
@@ -50,8 +40,12 @@ export default Service(
     }
 
     public getProblemById(id: string) {
-      return this.problems.find((problem) => problem.id === id) ??
+      const problem = this.problems.find((problem) => problem.id === id) ??
         this.previewProblems.find((problem) => problem.id === id);
+		if (!problem) {
+			throw "Problem with id " + id + " could not be found";
+		}
+		return problem;
     }
 
     public addPreviewProblem(problem: Problem) {
@@ -112,7 +106,7 @@ export default Service(
       problem.createdDate = new Date();
       problem.approved = false;
       this.previewProblems.push(problem);
-      this.writeToLocalFile(this.previewProblemsFilepath, this.previewProblems);
+      writeToLocalFile(this.previewProblemsFilepath, this.previewProblems);
       return problem;
     }
 

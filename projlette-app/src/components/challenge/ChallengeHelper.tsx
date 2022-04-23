@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export function challengeColor(id: string) {
-  const colors = [
+  const idColors = [
     "#EE4040",
     "#F0CF50",
     "#815CD1",
@@ -9,7 +9,7 @@ export function challengeColor(id: string) {
     "#34A24F",
     "#F9AA1F",
   ];
-  return colors[id.charCodeAt(0) % colors.length];
+  return idColors[id.charCodeAt(0) % idColors.length];
 }
 
 const difficultyColors = {
@@ -21,18 +21,11 @@ const difficultyColors = {
 
 const tagColors = [
   "#EE4040",
-  "#d3a83c",
   "#815CD1",
   "#3DA5E0",
   "#20a741",
   "#F9AA1F",
-  "#34A24F",
   "#ad1aa8",
-  "#a12121",
-  "#c19f0c",
-  "#188533",
-  "#ad1aa8",
-  "#a12121",
 ];
 
 export function getDifficultyColor(difficulty: string) {
@@ -41,7 +34,7 @@ export function getDifficultyColor(difficulty: string) {
 
 export function getTagColor(tag: string) {
   const sum = tag.split("").reduce((acc, cur) => acc + cur.charCodeAt(0), 0);
-  const hash = (sum * tag.length) / 2;
+  const hash = (sum * tag.length);
   return tagColors[hash % tagColors.length];
 };
 
