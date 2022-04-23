@@ -28,6 +28,7 @@ export default class ProblemController extends IController {
 	async post({ request, response }: Context) {
 		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
 		const problem = await bodyMappingJSON(request, Problem);
+		console.log("Creating new problem: ", problem);
 		ok(response, this.problemService.addProblem(problem));
 	}
 }

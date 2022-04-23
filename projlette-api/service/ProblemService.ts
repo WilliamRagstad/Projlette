@@ -46,6 +46,7 @@ export default Service(
 		problem.id = this.generateProblemId();
 		this.problems.push(problem);
 		this.writeToLocalFile();
+		return problem;
 	}
 
 	private randomFrom(list: string) {
