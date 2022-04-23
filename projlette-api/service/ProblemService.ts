@@ -4,45 +4,59 @@ import Problem, { Difficulty } from "../model/Problem.ts";
 export default Service(
   class ProblemService {
     // The local file that contains all problems
-    private filepath = "./problems.json";
+    private problemsFilepath = "./problems.json";
+    private previewProblemsFilepath = "./preview-problems.json";
     private problems: Problem[];
+    // Problems submitted by the community and not yet approved
+    private previewProblems: Problem[];
     constructor() {
-      this.problems = this.readFromLocalFile();
+      this.problems = this.readFromLocalFile(this.problemsFilepath);
+      this.previewProblems = this.readFromLocalFile(
+        this.previewProblemsFilepath,
+      );
     }
 
-    private readFromLocalFile() {
-      const file = Deno.readFileSync(this.filepath);
+    private readFromLocalFile(path: string) {
+      const file = Deno.readFileSync(path);
       const data = new TextDecoder("utf-8").decode(file);
       return JSON.parse(data);
     }
 
-    private writeToLocalFile() {
-      const data = JSON.stringify(this.problems);
-      Deno.writeFileSync(this.filepath, new TextEncoder().encode(data));
+    private writeToLocalFile(path: string, data: Problem[]) {
+      const json = JSON.stringify(data);
+      Deno.writeFileSync(path, new TextEncoder().encode(json));
     }
 
-    public randomProblems(count: number) {
+    public randomProblems(count: number, includePreview: boolean) {
+      const problemSet = includePreview
+        ? this.problems.concat(this.previewProblems)
+        : this.problems;
       const result = [];
       for (let i = 0; i < count; i++) {
         result.push(
-          this.problems[Math.floor(Math.random() * this.problems.length)],
+          problemSet[Math.floor(Math.random() * problemSet.length)],
         );
       }
       return result;
     }
 
-    public allProblems() {
+    public allProblems(includePreview: boolean) {
+      if (includePreview) return this.problems.concat(this.previewProblems);
       return this.problems;
     }
 
     public getProblemById(id: string) {
-      return this.problems.find((problem) => problem.id === id);
+      return this.problems.find((problem) => problem.id === id) ??
+        this.previewProblems.find((problem) => problem.id === id);
     }
 
-    public addProblem(problem: Problem) {
+    public addPreviewProblem(problem: Problem) {
       // Check so that the problem doesn't have an id
       if (problem.id) {
         throw "New problem must NOT already have an id";
+      }
+      if (problem.approved) {
+        throw "New problem must NOT already be approved";
       }
       // Validate the fields
       if (!problem.title || problem.title.trim().length < 4) {
@@ -61,24 +75,39 @@ export default Service(
         throw "Author is required and the name must be at least 4 characters long";
       }
       // Format fields
-      problem.title = this.stripSpecialCharacters(problem.title.trim().split(" ").map(
-        this.capitalizeFirstLetterInWord,
-      ).join(" ").replaceAll(". ", ""));
-      problem.description = this.stripSpecialCharacters(problem.description.trim());
+      problem.title = this.stripSpecialCharacters(
+        problem.title.trim().split(" ").map(
+          this.capitalizeFirstLetterInWord,
+        ).join(" ").replaceAll(". ", ""),
+      );
+      problem.description = this.stripSpecialCharacters(
+        problem.description.trim(),
+      );
       if (!problem.description.endsWith(".")) {
         problem.description += ".";
       }
-	  const difficulty = this.capitalizeFirstLetterInWord(problem.difficulty.trim().toLowerCase());
-	  if (Object.keys(Difficulty).indexOf(difficulty) === -1) {
-		throw "Difficulty must be one of the following: easy, medium, hard or expert";
-	  }
-	  problem.difficulty = difficulty as Difficulty;
-	  problem.tags = problem.tags.map(t => this.stripSpecialCharacters(t.toLowerCase()));
-	  problem.author = this.capitalizeFirstLetterInWord(this.stripSpecialCharacters(problem.author.trim()));
+      const difficulty = this.capitalizeFirstLetterInWord(
+        problem.difficulty.trim().toLowerCase(),
+      );
+      if (Object.keys(Difficulty).indexOf(difficulty) === -1) {
+        throw "Difficulty must be one of the following: easy, medium, hard or expert";
+      }
+      problem.difficulty = difficulty as Difficulty;
+      problem.tags = problem.tags.map((t) =>
+        this.stripSpecialCharacters(t.toLowerCase())
+      );
+      // Check that the tags are all unique
+      if (problem.tags.length !== new Set(problem.tags).size) {
+        throw "Tags must be unique";
+      }
+      problem.author = this.capitalizeFirstLetterInWord(
+        this.stripSpecialCharacters(problem.author.trim()),
+      );
       // Generate a new id
       problem.id = this.generateProblemId();
-      this.problems.push(problem);
-      this.writeToLocalFile();
+      problem.approved = false;
+      this.previewProblems.push(problem);
+      this.writeToLocalFile(this.previewProblemsFilepath, this.previewProblems);
       return problem;
     }
 
@@ -86,9 +115,9 @@ export default Service(
       return word[0].toUpperCase() + word.slice(1);
     }
 
-	private stripSpecialCharacters(str: string) {
-		return str.replace(/[^a-zA-Z0-9\s\-\.\,\&\?\:]/g, "");
-	}
+    private stripSpecialCharacters(str: string) {
+      return str.replace(/[^a-zA-Z0-9\s\-\.\,\&\?\:]/g, "");
+    }
 
     private randomFrom(list: string) {
       return list[Math.floor(Math.random() * list.length)];

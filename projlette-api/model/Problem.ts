@@ -15,6 +15,8 @@ export default class Problem {
   difficulty: Difficulty;
   tags: string[];
   author: string;
+  @Optional()
+  approved?: boolean;
 
   constructor(
     id: string | undefined = undefined,
@@ -23,6 +25,7 @@ export default class Problem {
     difficulty: Difficulty,
     tags: string[],
 	author: string,
+	approved: boolean = false,
   ) {
     this.id = id;
     this.title = title;
@@ -30,5 +33,6 @@ export default class Problem {
     this.difficulty = difficulty;
     this.tags = tags;
 	this.author = author;
+	this.approved = approved;
   }
 }

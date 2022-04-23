@@ -1,1 +1,71 @@
-[{"id":"A12X","title":"To-Do","description":"A simple todo application.","difficulty":"easy","tags":["chores","app"],"author":"William"},{"id":"E27C","title":"Pong","description":"The famous pong game from the seventies. Maybe add an AI or multiplayer?","difficulty":"medium","tags":["game","old school","native","console","web","ai"],"author":"William"},{"id":"P42K","title":"Tic Tac Toe","description":"The famous tic tac toe game. Maybe add an AI or multiplayer?","difficulty":"hard","tags":["game","old school","native","console","web","ai"],"author":"William"},{"id":"H30T","title":"The Calculator","description":"A simple calculator application that can compute basic arithmetic.","difficulty":"medium","tags":["language","evaluate","math","app"],"author":"William"},{"id":"G16L","title":"Movie Database","description":"A database for movies, with search, add, and delete functionality.","difficulty":"medium","tags":["database","search","add","delete"],"author":"William"},{"id":"F74Z","title":"Chess","description":"A game of chess against an AI or another player.","difficulty":"hard","tags":["ai","chess","game","old school"],"author":"William"},{"id":"B15X","title":"Emoji Translator","description":"Translator app that converts human written text into emoji-script.","difficulty":"easy","tags":["language","emoji","translate","emoji","app"],"author":"William"},{"id":"D98M","title":"Vending Machine","description":"A virtual vending machine that can dispense and display different items.","difficulty":"medium","tags":["display","interface","virtual","app"],"author":"William"},{"title":"Todays Word","description":"An app that displays a selected word for the day with some interesting information to it.","difficulty":"easy","tags":["word","display"],"author":"William","id":"V73W"},{"title":"Hangman","description":"The classic hangman game where one player (or computer) selects a word, and the other tries to guess it.","difficulty":"medium","tags":["game","ai","old school"],"author":"William","id":"Z76Y"},{"title":"Aaa Aaa","description":"bb bbb cccc.","difficulty":"Easy","tags":["c cc c"],"author":"Deee eeee","id":"P15L"}]
+[{
+  "id": "A12X",
+  "title": "To-Do",
+  "description": "A simple todo application.",
+  "difficulty": "easy",
+  "tags": ["chores", "app"],
+  "author": "William"
+}, {
+  "id": "E27C",
+  "title": "Pong",
+  "description": "The famous pong game from the seventies. Maybe add an AI or multiplayer?",
+  "difficulty": "medium",
+  "tags": ["game", "old school", "native", "console", "web", "ai"],
+  "author": "William"
+}, {
+  "id": "P42K",
+  "title": "Tic Tac Toe",
+  "description": "The famous tic tac toe game. Maybe add an AI or multiplayer?",
+  "difficulty": "hard",
+  "tags": ["game", "old school", "native", "console", "web", "ai"],
+  "author": "William"
+}, {
+  "id": "H30T",
+  "title": "The Calculator",
+  "description": "A simple calculator application that can compute basic arithmetic.",
+  "difficulty": "medium",
+  "tags": ["language", "evaluate", "math", "app"],
+  "author": "William"
+}, {
+  "id": "G16L",
+  "title": "Movie Database",
+  "description": "A database for movies, with search, add, and delete functionality.",
+  "difficulty": "medium",
+  "tags": ["database", "search", "add", "delete"],
+  "author": "William"
+}, {
+  "id": "F74Z",
+  "title": "Chess",
+  "description": "A game of chess against an AI or another player.",
+  "difficulty": "hard",
+  "tags": ["ai", "chess", "game", "old school"],
+  "author": "William"
+}, {
+  "id": "B15X",
+  "title": "Emoji Translator",
+  "description": "Translator app that converts human written text into emoji-script.",
+  "difficulty": "easy",
+  "tags": ["language", "translate", "emoji", "app"],
+  "author": "William"
+}, {
+  "id": "D98M",
+  "title": "Vending Machine",
+  "description": "A virtual vending machine that can dispense and display different items.",
+  "difficulty": "medium",
+  "tags": ["display", "interface", "virtual", "app"],
+  "author": "William"
+}, {
+  "title": "Todays Word",
+  "description": "An app that displays a selected word for the day with some interesting information to it.",
+  "difficulty": "easy",
+  "tags": ["word", "display"],
+  "author": "William",
+  "id": "V73W"
+}, {
+  "title": "Hangman",
+  "description": "The classic hangman game where one player (or computer) selects a word, and the other tries to guess it.",
+  "difficulty": "medium",
+  "tags": ["game", "ai", "old school"],
+  "author": "William",
+  "id": "Z76Y"
+}]

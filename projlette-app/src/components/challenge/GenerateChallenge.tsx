@@ -1,17 +1,11 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { apiFetch } from "../../util/api";
+import { challengeColor, renderTags } from "./ChallengeHelper";
 import Wheel from "./Wheel";
 
 export default function GenerateChallenge() {
-  const colors = [
-    "#EE4040",
-    "#F0CF50",
-    "#815CD1",
-    "#3DA5E0",
-    "#34A24F",
-    "#F9AA1F",
-  ];
+  const [winner, setWinner] = useState(null);
 
   const generator = async (count) => {
     // Fetch the data from the API
@@ -19,7 +13,7 @@ export default function GenerateChallenge() {
     return await response.json();
   };
 
-  const segmentWidth = 180;
+  const segmentWidth = 200;
   const segmentHeight = 150;
   const segmentComponent = (problem, index) => {
     return (
@@ -32,7 +26,7 @@ export default function GenerateChallenge() {
       >
         <div className="segment-title">
           <b>
-            <span style={{ color: colors[index % colors.length] }}>
+            <span style={{ color: challengeColor(problem.id) }}>
               {problem.id}
             </span>{" "}
             {problem.title}
@@ -45,11 +39,13 @@ export default function GenerateChallenge() {
   const [start, setStart] = useState(false);
   const onDone = (winner, index) => {
     setStart(false);
-    console.log("The winner is: ", index, "-", winner);
+    setWinner(winner);
+    // console.log("The winner is: ", index, "-", winner);
   };
   const onFail = (msg) => {
     setStart(false);
-    console.log("Failed: ", msg);
+    setWinner(null);
+    // console.log("Failed: ", msg);
   };
   return (
     <div id="generate">
@@ -106,6 +102,23 @@ export default function GenerateChallenge() {
               </button>
             </div>
           </div>
+          {winner && (
+            <div className="box">
+              <h1 className="title">Challenge: {winner.title}</h1>
+              <h2 className="subtitle">
+                <span style={{ color: challengeColor(winner.id) }}>
+                  <b>{winner.id}</b>
+                </span>{" "}
+                by <em>{winner.author}</em>
+              </h2>
+              <p>
+                <h3 className="subtitle is-5">Description:</h3>
+                {winner.description}
+              </p>
+              <br />
+              {renderTags(winner.tags)}
+            </div>
+          )}
         </div>
       </div>
     </div>

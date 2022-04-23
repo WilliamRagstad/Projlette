@@ -1,35 +1,30 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { apiFetch } from "../../util/api";
+import { getDifficultyColor, renderTags } from "./ChallengeHelper";
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);
+  const [filteredChallenges, setFilteredChallenges] = React.useState([]);
   useEffect(() => {
     apiFetch("/problem/all/")
       .then((res) => res.json())
       .then(setChallenges);
   }, []);
 
-  const tagColors = [
-    "#EE4040",
-    "#d3a83c",
-    "#815CD1",
-    "#3DA5E0",
-    "#20a741",
-    "#F9AA1F",
-  ];
+  useEffect(() => {
+    setFilteredChallenges(challenges);
+  }, [challenges]);
 
-  const difficultyColors = {
-    easy: "#188533",
-    medium: "#c19f0c",
-    hard: "#a12121",
-    expert: "#ad1aa8",
-  };
+  const onSearch = () => {
+    // Filter through the challenges and update filteredChallenges
+	const text = (document.getElementById("search-text") as HTMLInputElement).value;
+	const difficulty = (document.getElementById("search-difficulty") as HTMLSelectElement).selectedOptions[0].value;
+	console.log(text, difficulty);
 
-  const getTagColor = (tag: string) => {
-    const sum = tag.split("").reduce((acc, cur) => acc + cur.charCodeAt(0), 0);
-    const hash = (sum * tag.length) / 2;
-    return tagColors[hash % tagColors.length];
+	setFilteredChallenges(challenges.filter((challenge) => {
+		return challenge.title.toLowerCase().includes(text.toLowerCase());
+	}));
   };
 
   return (
@@ -42,6 +37,43 @@ export default function AllChallenges() {
           clicking the "Submit Challenge" tab above.
         </h2>
       </div>
+
+      <div className="block">
+        <h2 className="title is-4">Filter</h2>
+        <p className="subtitle is-5">
+          Search by <em>id</em>, <em>title</em>, <em>description</em>,{" "}
+          <em>author</em> or <em>tags</em>.
+        </p>
+
+        <div className="field has-addons">
+          <div className="control has-icons-left">
+            <div className="select">
+              <select id="search-difficulty" onSelect={onSearch} defaultValue="Easy peazy">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+                <option>Expert</option>
+              </select>
+            </div>
+            <div className="icon is-small is-left">
+              <i className="fas fa-dumbbell"></i>
+              {/* <i className="fas fa-fist-raised"></i> */}
+            </div>
+          </div>
+          <div className="control is-expanded">
+            <input
+              className="input"
+              type="text"
+              placeholder="Find a challenge"
+			  id="search-text"
+            />
+          </div>
+          <div className="control">
+            <a className="button is-info" onClick={onSearch}>Search</a>
+          </div>
+        </div>
+      </div>
+
       <table className="table is-bordered is-fullwidth is-striped is-narrow is-hoverable">
         <thead>
           <tr>
@@ -54,7 +86,7 @@ export default function AllChallenges() {
           </tr>
         </thead>
         <tbody>
-          {challenges.map((challenge) => (
+          {filteredChallenges.map((challenge) => (
             <tr key={challenge.id}>
               <td>
                 <a href={"/problem/" + challenge.id}>
@@ -71,26 +103,14 @@ export default function AllChallenges() {
               <td>
                 <span
                   style={{
-                    color: difficultyColors[challenge.difficulty.toLowerCase()],
+                    color: getDifficultyColor(challenge.difficulty),
                   }}
                 >
                   {challenge.difficulty[0].toUpperCase() +
                     challenge.difficulty.slice(1)}
                 </span>
               </td>
-              <td>
-                <div className="tags">
-                  {challenge.tags.map((tag) => (
-                    <span
-                      className="tag is-primary"
-                      key={tag}
-                      style={{ backgroundColor: getTagColor(tag) }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </td>
+              <td>{renderTags(challenge.tags)}</td>
             </tr>
           ))}
         </tbody>

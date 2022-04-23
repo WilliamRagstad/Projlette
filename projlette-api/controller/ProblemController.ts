@@ -10,13 +10,19 @@ export default class ProblemController extends IController {
 	@Endpoint("GET", "/random/:count")
 	randomProblems({ count }: Params, { response }: Context) {
 		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
-		ok(response, this.problemService.randomProblems(parseInt(count)));
+		ok(response, this.problemService.randomProblems(parseInt(count), false));
 	}
 
 	@Endpoint("GET", "/all")
 	allProblems(_: Params, { response }: Context) {
 		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
-		ok(response, this.problemService.allProblems());
+		ok(response, this.problemService.allProblems(true));
+	}
+
+	@Endpoint("GET", "/all/:previews")
+	allPreviewProblems({ previews }: Params, { response }: Context) {
+		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
+		ok(response, this.problemService.allProblems(previews.toLowerCase() === "true"));
 	}
 
 	@Endpoint("GET", "/:id")
@@ -29,8 +35,8 @@ export default class ProblemController extends IController {
 		response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
 		let problem = await bodyMappingJSON(request, Problem);
 		try {
-			problem = this.problemService.addProblem(problem);
-			console.log("Creating new problem: ", problem);
+			problem = this.problemService.addPreviewProblem(problem);
+			console.log("Creating new preview of problem: ", problem);
 			ok(response, problem);
 		} catch (error) {
 			console.error("Error creating problem: ", error);

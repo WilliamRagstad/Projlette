@@ -1,5 +1,6 @@
 import * as React from "react";
 import { apiFetch } from "../../util/api";
+import { challengeColor } from "./ChallengeHelper";
 
 export default function SubmitChallenge() {
   const [submitMessage, setSubmitMessage] = React.useState("");
@@ -28,16 +29,19 @@ export default function SubmitChallenge() {
       }),
     }).then((res) => {
       if (res.ok) {
-		res.json().then((json) => {
-		  setCreatedId(json.id);
-		});
+        res.json().then((json) => {
+          setCreatedId(json.id);
+        });
       } else {
-		res.text().then((text) => {
-			setSubmitMessage(`Error: ${text}`);
-		}).catch((err) => {
-			setSubmitMessage(`Error (${res.statusText}): ${err}`);
-		});
-	  }
+        res
+          .text()
+          .then((text) => {
+            setSubmitMessage(`Error: ${text}`);
+          })
+          .catch((err) => {
+            setSubmitMessage(`Error (${res.statusText}): ${err}`);
+          });
+      }
     });
   };
   return (
@@ -48,6 +52,7 @@ export default function SubmitChallenge() {
           Submit your own challenges and programming problems to the community.
         </h2>
       </div>
+	  <br />
       {!createdId ? (
         <form className="form" onSubmit={onSubmit}>
           <div className="field">
@@ -100,6 +105,13 @@ export default function SubmitChallenge() {
                   required
                 />
               </div>
+              <p className="help">
+                Tags are used to categorize challenges. For example:{" "}
+                <code>
+                  algorithms, data structures, recursion, binary search
+                </code>
+                , etc.
+              </p>
             </div>
           </div>
 
@@ -146,16 +158,20 @@ export default function SubmitChallenge() {
           <p>{submitMessage}</p>
         </form>
       ) : (
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">Thank you!</p>
-          </header>
-          <div className="card-content">
-            <div className="content">
-              Your challenge has been submitted! You can view it{" "}
-              <a href={`/problem/${createdId}`}>here</a>.
-            </div>
-          </div>
+        <div className="box">
+          <h1 className="title">Thank You!</h1>
+          <h2 className="subtitle">Challenge ID: <span style={{ color: challengeColor(createdId) }}><b>{createdId}</b></span></h2>
+          Your programming challenge/problem has been submitted for review. It will be considered
+            for inclusion in the official challenge set, and accepted or rejected within{" "}
+            <b>7 days</b>.
+            <br />
+			Meanwhile, you can view the status of your challenge at any time by visiting
+            the following link:
+			<br /><br />
+            <a className="button is-link" href={`/problem/${createdId}`}>Preview Challenge</a>
+            <br />
+            <br />
+            <a href="/">&lt; Return to the challenge list</a>.
         </div>
       )}
     </div>
