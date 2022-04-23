@@ -1,7 +1,11 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { apiFetch } from "../../util/api";
-import { getDifficultyColor, renderTags } from "./ChallengeHelper";
+import {
+  challengeColor,
+  getDifficultyColor,
+  renderTags,
+} from "./ChallengeHelper";
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);
@@ -18,13 +22,18 @@ export default function AllChallenges() {
 
   const onSearch = () => {
     // Filter through the challenges and update filteredChallenges
-	const text = (document.getElementById("search-text") as HTMLInputElement).value;
-	const difficulty = (document.getElementById("search-difficulty") as HTMLSelectElement).selectedOptions[0].value;
-	console.log(text, difficulty);
+    const text = (document.getElementById("search-text") as HTMLInputElement)
+      .value;
+    const difficulty = (
+      document.getElementById("search-difficulty") as HTMLSelectElement
+    ).selectedOptions[0].value;
+    console.log(text, difficulty);
 
-	setFilteredChallenges(challenges.filter((challenge) => {
-		return challenge.title.toLowerCase().includes(text.toLowerCase());
-	}));
+    setFilteredChallenges(
+      challenges.filter((challenge) => {
+        return challenge.title.toLowerCase().includes(text.toLowerCase());
+      })
+    );
   };
 
   return (
@@ -48,7 +57,11 @@ export default function AllChallenges() {
         <div className="field has-addons">
           <div className="control has-icons-left">
             <div className="select">
-              <select id="search-difficulty" onSelect={onSearch} defaultValue="Easy peazy">
+              <select
+                id="search-difficulty"
+                onSelect={onSearch}
+                defaultValue="Easy peazy"
+              >
                 <option>Easy</option>
                 <option>Medium</option>
                 <option>Hard</option>
@@ -65,11 +78,13 @@ export default function AllChallenges() {
               className="input"
               type="text"
               placeholder="Find a challenge"
-			  id="search-text"
+              id="search-text"
             />
           </div>
           <div className="control">
-            <a className="button is-info" onClick={onSearch}>Search</a>
+            <a className="button is-info" onClick={onSearch}>
+              Search
+            </a>
           </div>
         </div>
       </div>
@@ -81,7 +96,9 @@ export default function AllChallenges() {
             <th>Title</th>
             <th>Description</th>
             <th>Author</th>
-            <th><abbr title="Is Approved">A</abbr></th>
+            <th>
+              <abbr title="Is Approved">A</abbr>
+            </th>
             <th>Difficulty</th>
             <th>Tags</th>
           </tr>
@@ -91,7 +108,9 @@ export default function AllChallenges() {
             <tr key={challenge.id}>
               <td className="has-text-centered">
                 <a href={"/problem/" + challenge.id}>
-                  <em>{challenge.id}</em>
+                  <span style={{ color: challengeColor(challenge.id) }}>
+                    {challenge.id}
+                  </span>
                 </a>
               </td>
               <td>
@@ -100,16 +119,33 @@ export default function AllChallenges() {
                 </a>
               </td>
               <td>{challenge.description}</td>
-              <td><em>{challenge.author}</em></td>
-              <td className={"has-text-centered has-text-" + (challenge.approved ? "success" : "danger")}>{challenge.approved ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>}</td>
+              <td>
+                <em>{challenge.author}</em>
+              </td>
+              <td
+                className={
+                  "has-text-centered has-text-" +
+                  (challenge.approved ? "success" : "danger")
+                }
+              >
+                {challenge.approved ? (
+                  <i className="fas fa-check"></i>
+                ) : (
+                  <i className="fas fa-times"></i>
+                )}
+              </td>
               <td>
                 <span
                   style={{
                     color: getDifficultyColor(challenge.difficulty),
                   }}
                 >
-                  <code><b>{challenge.difficulty[0].toUpperCase() +
-                    challenge.difficulty.slice(1)}</b></code>
+                  <code>
+                    <b>
+                      {challenge.difficulty[0].toUpperCase() +
+                        challenge.difficulty.slice(1)}
+                    </b>
+                  </code>
                 </span>
               </td>
               <td>{renderTags(challenge.tags)}</td>

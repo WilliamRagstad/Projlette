@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../../util/api";
 import { challengeColor, renderTags } from "./ChallengeHelper";
 import Wheel from "./Wheel";
+import "./Segment.css";
 
 export default function GenerateChallenge() {
   const [winner, setWinner] = useState(null);
@@ -104,7 +105,7 @@ export default function GenerateChallenge() {
           </div>
           {winner && (
             <div className="box">
-              <h1 className="title">Challenge: {winner.title}</h1>
+              <h1 className="title">{winner.title}</h1>
               <h2 className="subtitle">
                 <span style={{ color: challengeColor(winner.id) }}>
                   <b>{winner.id}</b>
@@ -112,11 +113,12 @@ export default function GenerateChallenge() {
                 by <em>{winner.author}</em>
               </h2>
               <p>
-                <h3 className="subtitle is-5">Description:</h3>
+                <h3 className="subtitle is-5">Description</h3>
                 {winner.description}
               </p>
               <br />
               {renderTags(winner.tags)}
+            	<a className="button is-link is-fullwidth is-rounded" href={`/problem/${winner.id}`}>Visit Challenge</a>
             </div>
           )}
         </div>
