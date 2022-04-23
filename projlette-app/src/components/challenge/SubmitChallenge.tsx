@@ -23,7 +23,7 @@ export default function SubmitChallenge() {
         title: title.value,
         description: description.value,
         difficulty: difficulty.value,
-        tags: tags.value,
+        tags: tags.value.split(',').map(t => t.trim().toLowerCase()),
         author: author.value,
       }),
     })
