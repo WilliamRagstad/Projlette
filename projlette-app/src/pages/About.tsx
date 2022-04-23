@@ -34,6 +34,21 @@ export default function About() {
                   Share your solution with your peers and the community, get
                   constructive feedback from others, and improve your skills.
                 </h2>
+                <a
+                  href={
+                    "https://twitter.com/intent/tweet?text=" +
+                    encodeURIComponent(
+                      "I solve programming challenges on @Projlette!🎉\n#projlette"
+                    )
+                  }
+                  className="button"
+                  target="_blank"
+                >
+                  <span className="icon is-medium">
+                    <i className="fab fa-twitter"></i>
+                  </span>
+                  &nbsp;&nbsp; Share on Twitter
+                </a>
               </div>
             </div>
             <div className="column">
@@ -49,7 +64,7 @@ export default function About() {
                 </h2>
                 <Link to="/" className="button">
                   <span className="icon">
-				  <i className="fas fa-code"></i>
+                    <i className="fas fa-code"></i>
                   </span>
                   &nbsp;&nbsp; Pick a challenge
                 </Link>

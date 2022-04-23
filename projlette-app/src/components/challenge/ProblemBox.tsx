@@ -39,12 +39,46 @@ export default function ProblemBox({ problem, linkToProblem = false }) {
       </div>
       {linkToProblem && (
         <a
-          className="button is-link is-fullwidth is-rounded"
+          className="button is-link is-fullwidth is-rounded mb-4"
           href={`/problem/${problem.id}`}
         >
           Visit Challenge
         </a>
       )}
+      <div className="action-links is-size-7">
+        <a
+          href="#"
+          className="mr-3"
+          onClick={() =>
+            navigator.clipboard.writeText(
+              `${window.location.origin}/problem/${problem.id}`
+            )
+          }
+        >
+          <i className="fas fa-link"></i> Copy Link
+        </a>
+        <a
+          href={
+            "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(
+              "Check out the programming challenge '" +
+                problem.title +
+                "' on @Projlette!\nhttps://projlette.com/problem/" +
+                problem.id
+            )
+          }
+          target="_blank"
+          className="mr-3"
+        >
+          <i className="fab fa-twitter"></i> Share on Twitter
+        </a>
+        <a href="#" className="mr-3">
+          <i className="fas fa-heart"></i> Favorite
+        </a>
+        <a href="#">
+          <i className="fas fa-flag"></i> Report
+        </a>
+      </div>
     </div>
   );
 }
