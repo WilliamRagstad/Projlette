@@ -81,7 +81,7 @@ export default function AllChallenges() {
             <th>Title</th>
             <th>Description</th>
             <th>Author</th>
-            <th>Approved</th>
+            <th><abbr title="Is Approved">A</abbr></th>
             <th>Difficulty</th>
             <th>Tags</th>
           </tr>
@@ -89,7 +89,7 @@ export default function AllChallenges() {
         <tbody>
           {filteredChallenges.map((challenge) => (
             <tr key={challenge.id}>
-              <td>
+              <td className="has-text-centered">
                 <a href={"/problem/" + challenge.id}>
                   <em>{challenge.id}</em>
                 </a>
@@ -100,16 +100,16 @@ export default function AllChallenges() {
                 </a>
               </td>
               <td>{challenge.description}</td>
-              <td>{challenge.author}</td>
-              <td>{challenge.approved ? "Yes" : "No"}</td>
+              <td><em>{challenge.author}</em></td>
+              <td className={"has-text-centered has-text-" + (challenge.approved ? "success" : "danger")}>{challenge.approved ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>}</td>
               <td>
                 <span
                   style={{
                     color: getDifficultyColor(challenge.difficulty),
                   }}
                 >
-                  {challenge.difficulty[0].toUpperCase() +
-                    challenge.difficulty.slice(1)}
+                  <code><b>{challenge.difficulty[0].toUpperCase() +
+                    challenge.difficulty.slice(1)}</b></code>
                 </span>
               </td>
               <td>{renderTags(challenge.tags)}</td>
