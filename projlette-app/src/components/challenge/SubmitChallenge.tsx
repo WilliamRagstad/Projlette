@@ -4,7 +4,7 @@ import { challengeColor } from "./ChallengeHelper";
 
 export default function SubmitChallenge() {
   const [submitMessage, setSubmitMessage] = React.useState("");
-  const [createdId, setCreatedId] = React.useState(null);
+  const [createdProblem, setCreatedProblem] = React.useState(null);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Submitting...");
@@ -30,7 +30,7 @@ export default function SubmitChallenge() {
     }).then((res) => {
       if (res.ok) {
         res.json().then((json) => {
-          setCreatedId(json.id);
+          setCreatedProblem(json);
         });
       } else {
         res
@@ -53,7 +53,7 @@ export default function SubmitChallenge() {
         </h2>
       </div>
 	  <br />
-      {!createdId ? (
+      {!createdProblem ? (
         <form className="form" onSubmit={onSubmit}>
           <div className="field">
             <label className="label">Title</label>
@@ -160,7 +160,7 @@ export default function SubmitChallenge() {
       ) : (
         <div className="box">
           <h1 className="title">Thank You!</h1>
-          <h2 className="subtitle">Challenge ID: <span style={{ color: challengeColor(createdId) }}><b>{createdId}</b></span></h2>
+          <h2 className="subtitle">Challenge: <b><span style={{ color: challengeColor(createdProblem.id) }}>{createdProblem.id}</span> {createdProblem.title} </b></h2>
           Your programming challenge/problem has been submitted for review. It will be considered
             for inclusion in the official challenge set, and accepted or rejected within{" "}
             <b>7 days</b>.
@@ -168,7 +168,7 @@ export default function SubmitChallenge() {
 			Meanwhile, you can view the status of your challenge at any time by visiting
             the following link:
 			<br /><br />
-            <a className="button is-link" href={`/problem/${createdId}`}>Preview Challenge</a>
+            <a className="button is-link" href={`/problem/${createdProblem.id}`}>Preview Challenge</a>
             <br />
             <br />
             <a href="/">&lt; Return to the challenge list</a>.

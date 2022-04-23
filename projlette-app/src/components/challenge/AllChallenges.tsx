@@ -81,6 +81,7 @@ export default function AllChallenges() {
             <th>Title</th>
             <th>Description</th>
             <th>Author</th>
+            <th>Approved</th>
             <th>Difficulty</th>
             <th>Tags</th>
           </tr>
@@ -100,6 +101,7 @@ export default function AllChallenges() {
               </td>
               <td>{challenge.description}</td>
               <td>{challenge.author}</td>
+              <td>{challenge.approved ? "Yes" : "No"}</td>
               <td>
                 <span
                   style={{

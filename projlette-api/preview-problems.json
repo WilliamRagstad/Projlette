@@ -1,1 +1,17 @@
-[{"title":"Number Guessing Game","description":"Guess a secret number randomly picked between 1 and 100.","difficulty":"Easy","tags":["game","old school","binary search","math"],"author":"William","id":"W12P","approved":false},{"title":"Public Transport","description":"An app that shows the timetable for trains and public transport nearby.","difficulty":"Medium","tags":["time","transport","app"],"author":"William","id":"L30Q","approved":false}]
+[{
+  "title": "Number Guessing Game",
+  "description": "Guess a secret number randomly picked between 1 and 100.",
+  "difficulty": "Easy",
+  "tags": ["game", "old school", "binary search", "math"],
+  "author": "William",
+  "id": "W12P",
+  "approved": false
+}, {
+  "title": "Public Transport",
+  "description": "An app that shows the timetable for trains and public transport nearby.",
+  "difficulty": "Medium",
+  "tags": ["time", "transport", "app"],
+  "author": "William",
+  "id": "L30Q",
+  "approved": false
+}]

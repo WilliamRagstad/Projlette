@@ -10,7 +10,11 @@ export default Service(
     // Problems submitted by the community and not yet approved
     private previewProblems: Problem[];
     constructor() {
+      // Load official problems
       this.problems = this.readFromLocalFile(this.problemsFilepath);
+      // All official problems are approved by default
+      this.problems.forEach((problem) => problem.approved = true);
+      // Load preview problems
       this.previewProblems = this.readFromLocalFile(
         this.previewProblemsFilepath,
       );
