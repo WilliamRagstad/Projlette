@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { apiFetch } from "../../util/api";
 import {
   challengeColor,
-  getDifficultyColor,
+  renderApproved,
+  renderDifficulty,
   renderTags,
 } from "./ChallengeHelper";
 
@@ -122,30 +123,10 @@ export default function AllChallenges() {
               <td>
                 <em>{challenge.author}</em>
               </td>
-              <td
-                className={
-                  "has-text-centered has-text-" +
-                  (challenge.approved ? "success" : "danger")
-                }
-              >
-                {challenge.approved ? (
-                  <i className="fas fa-check"></i>
-                ) : (
-                  <i className="fas fa-times"></i>
-                )}
+              <td className="has-text-centered">
+                {renderApproved(challenge.approved)}
               </td>
-              <td>
-                <code
-                  style={{
-                    color: getDifficultyColor(challenge.difficulty),
-                  }}
-                >
-                    <b>
-                      {challenge.difficulty[0].toUpperCase() +
-                        challenge.difficulty.slice(1)}
-                    </b>
-                </code>
-              </td>
+              <td>{renderDifficulty(challenge.difficulty)}</td>
               <td>{renderTags(challenge.tags)}</td>
             </tr>
           ))}

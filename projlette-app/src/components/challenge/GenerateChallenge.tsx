@@ -4,6 +4,7 @@ import { apiFetch } from "../../util/api";
 import { challengeColor, renderTags } from "./ChallengeHelper";
 import Wheel from "./Wheel";
 import "./Segment.css";
+import ProblemBox from "./ProblemBox";
 
 export default function GenerateChallenge() {
   const [winner, setWinner] = useState(null);
@@ -58,7 +59,8 @@ export default function GenerateChallenge() {
           challenge from the list of existing challenges.
         </h2>
       </div>
-      <br /><br />
+      <br />
+      <br />
       <div className="columns is-centered">
         <div className="column is-two-thirds">
           <div className="box">
@@ -93,24 +95,7 @@ export default function GenerateChallenge() {
               </button>
             </div>
           </div>
-          {winner && (
-            <div className="box">
-              <h1 className="title">{winner.title}</h1>
-              <h2 className="subtitle">
-                <span style={{ color: challengeColor(winner.id) }}>
-                  <b>{winner.id}</b>
-                </span>{" "}
-                by <em>{winner.author}</em>
-              </h2>
-              <p>
-                <h3 className="subtitle is-5">Description</h3>
-                {winner.description}
-              </p>
-              <br />
-              {renderTags(winner.tags)}
-            	<a className="button is-link is-fullwidth is-rounded" href={`/problem/${winner.id}`}>Visit Challenge</a>
-            </div>
-          )}
+          {winner && <ProblemBox problem={winner} linkToProblem={true} />}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import {
   challengeColor,
   renderTags,
 } from "../components/challenge/ChallengeHelper";
+import ProblemBox from "../components/challenge/ProblemBox";
 // @ts-ignore
 import Header from "../components/header/Header";
 import { apiFetch } from "../util/api";
@@ -92,19 +93,7 @@ export default function Problem() {
               {problem ? (
                 <>
                   <br />
-                  <div className="box">
-                    <h1 className="title">{problem.title}</h1>
-                    <h2 className="subtitle">
-                      <span style={{ color: challengeColor(problem.id) }}>
-                        <b>{problem.id}</b>
-                      </span>{" "}
-                      by <em>{problem.author}</em>
-                    </h2>
-                    <h3 className="subtitle is-5 mb-1">Description</h3>
-                    <p>{problem.description}</p>
-                    <br />
-                    {renderTags(problem.tags)}
-                  </div>
+                  <ProblemBox problem={problem}/>
                   <br />
 
                   <div className="block">

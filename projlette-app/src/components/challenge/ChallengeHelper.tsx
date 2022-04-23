@@ -53,3 +53,31 @@ export function renderTags(tags: string[]) {
     </div>
   );
 }
+
+export function renderApproved(isApproved: boolean) {
+	return (<span
+		className={
+		  "has-text-" + (isApproved ? "success" : "danger")
+		}
+	  >
+		{isApproved ? (
+		  <i className="fas fa-check"></i>
+		) : (
+		  <i className="fas fa-times"></i>
+		)}
+	  </span>)
+}
+
+export function renderDifficulty(difficulty: string) {
+	return (<code
+		style={{
+		  color: getDifficultyColor(difficulty),
+		  wordBreak: "keep-all"
+		}}
+	  >
+		<b>
+		  {difficulty[0].toUpperCase() +
+			difficulty.slice(1)}
+		</b>
+	  </code>);
+}
