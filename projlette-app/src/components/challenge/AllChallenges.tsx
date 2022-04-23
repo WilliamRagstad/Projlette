@@ -135,18 +135,16 @@ export default function AllChallenges() {
                 )}
               </td>
               <td>
-                <span
+                <code
                   style={{
                     color: getDifficultyColor(challenge.difficulty),
                   }}
                 >
-                  <code>
                     <b>
                       {challenge.difficulty[0].toUpperCase() +
                         challenge.difficulty.slice(1)}
                     </b>
-                  </code>
-                </span>
+                </code>
               </td>
               <td>{renderTags(challenge.tags)}</td>
             </tr>
