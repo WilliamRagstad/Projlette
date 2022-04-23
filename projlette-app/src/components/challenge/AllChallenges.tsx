@@ -23,18 +23,52 @@ export default function AllChallenges() {
 
   const onSearch = () => {
     // Filter through the challenges and update filteredChallenges
-    const text = (document.getElementById("search-text") as HTMLInputElement)
-      .value;
+    const text = (
+      document.getElementById("search-text") as HTMLInputElement
+    ).value
+      .trim()
+      .toLowerCase();
+    let textParts = text.length > 0 ? text.split(" ") : [];
     const difficulty = (
       document.getElementById("search-difficulty") as HTMLSelectElement
-    ).selectedOptions[0].value;
-    console.log(text, difficulty);
+    ).selectedOptions[0].value.toLowerCase();
 
-    setFilteredChallenges(
-      challenges.filter((challenge) => {
-        return challenge.title.toLowerCase().includes(text.toLowerCase());
-      })
-    );
+    const maxScore = 6; // nr of aspects to search for
+    const searchBuckets = [...Array(maxScore + 1)].map((a) => []);
+    const searchResults = challenges.reduce((acc: any[][], challenge) => {
+      let score = maxScore;
+      if (textParts.some((tp) => challenge.id.toLowerCase().includes(tp))) {
+        score--;
+      }
+      if (textParts.some((tp) => challenge.title.toLowerCase().includes(tp))) {
+        score--;
+      }
+      if (
+        textParts.some((tp) => challenge.description.toLowerCase().includes(tp))
+      ) {
+        score--;
+      }
+      if (textParts.some((tp) => challenge.author.toLowerCase().includes(tp))) {
+        score--;
+      }
+      if (
+        difficulty !== "any" &&
+        challenge.difficulty.toLowerCase().includes(difficulty)
+      ) {
+        score--;
+      }
+      challenge.tags.forEach((tag) => {
+        if (
+          textParts.some((tp) => tag.toLowerCase().includes(tp)) &&
+          score > 0
+        ) {
+          score--;
+        }
+      });
+      acc[score].push(challenge);
+      return acc;
+    }, searchBuckets);
+    setFilteredChallenges(searchResults.flat());
   };
 
   return (
@@ -60,9 +94,10 @@ export default function AllChallenges() {
             <div className="select">
               <select
                 id="search-difficulty"
-                onSelect={onSearch}
+                onChange={onSearch}
                 defaultValue="Easy peazy"
               >
+                <option>Any</option>
                 <option>Easy</option>
                 <option>Medium</option>
                 <option>Hard</option>
@@ -80,6 +115,7 @@ export default function AllChallenges() {
               type="text"
               placeholder="Find a challenge"
               id="search-text"
+              onKeyUp={onSearch}
             />
           </div>
           <div className="control">
