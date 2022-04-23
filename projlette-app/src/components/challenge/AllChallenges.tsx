@@ -48,7 +48,7 @@ export default function AllChallenges() {
             <th>ID</th>
             <th>Title</th>
             <th>Description</th>
-			<th>Author</th>
+            <th>Author</th>
             <th>Difficulty</th>
             <th>Tags</th>
           </tr>
@@ -56,17 +56,26 @@ export default function AllChallenges() {
         <tbody>
           {challenges.map((challenge) => (
             <tr key={challenge.id}>
-              <td><em>{challenge.id}</em></td>
-              <td><b>{challenge.title}</b></td>
+              <td>
+                <a href={"/problem/" + challenge.id}>
+                  <em>{challenge.id}</em>
+                </a>
+              </td>
+              <td>
+                <a href={"/problem/" + challenge.id}>
+                  <b>{challenge.title}</b>
+                </a>
+              </td>
               <td>{challenge.description}</td>
-			  <td>{challenge.author}</td>
+              <td>{challenge.author}</td>
               <td>
                 <span
                   style={{
                     color: difficultyColors[challenge.difficulty.toLowerCase()],
                   }}
                 >
-                  {challenge.difficulty[0].toUpperCase() + challenge.difficulty.slice(1)}
+                  {challenge.difficulty[0].toUpperCase() +
+                    challenge.difficulty.slice(1)}
                 </span>
               </td>
               <td>
