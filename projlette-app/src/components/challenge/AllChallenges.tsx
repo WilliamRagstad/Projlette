@@ -63,7 +63,7 @@ export default function AllChallenges() {
               <td>
                 <span
                   style={{
-                    color: difficultyColors[challenge.difficulty],
+                    color: difficultyColors[challenge.difficulty.toLowerCase()],
                   }}
                 >
                   {challenge.difficulty[0].toUpperCase() + challenge.difficulty.slice(1)}

@@ -23,20 +23,22 @@ export default function SubmitChallenge() {
         title: title.value,
         description: description.value,
         difficulty: difficulty.value,
-        tags: tags.value.split(',').map(t => t.trim().toLowerCase()),
+        tags: tags.value.split(",").map((t) => t.trim().toLowerCase()),
         author: author.value,
       }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          setSubmitMessage("Error submitting: " + res.statusText);
-          return;
-        }
-        return res.json();
-      })
-      .then((json) => {
-        setCreatedId(json.id);
-      });
+    }).then((res) => {
+      if (res.ok) {
+		res.json().then((json) => {
+		  setCreatedId(json.id);
+		});
+      } else {
+		res.text().then((text) => {
+			setSubmitMessage(`Error: ${text}`);
+		}).catch((err) => {
+			setSubmitMessage(`Error (${res.statusText}): ${err}`);
+		});
+	  }
+    });
   };
   return (
     <div id="submit">
@@ -150,8 +152,9 @@ export default function SubmitChallenge() {
           </header>
           <div className="card-content">
             <div className="content">
-				Your challenge has been submitted! You can view it <a href={`/problem/${createdId}`}>here</a>.
-				</div>
+              Your challenge has been submitted! You can view it{" "}
+              <a href={`/problem/${createdId}`}>here</a>.
+            </div>
           </div>
         </div>
       )}
