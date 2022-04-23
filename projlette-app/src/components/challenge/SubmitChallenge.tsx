@@ -3,7 +3,7 @@ import { apiFetch } from "../../util/api";
 import { challengeColor } from "./ChallengeHelper";
 
 export default function SubmitChallenge() {
-  const [submitMessage, setSubmitMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
   const [createdProblem, setCreatedProblem] = React.useState(null);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,10 +36,10 @@ export default function SubmitChallenge() {
         res
           .text()
           .then((text) => {
-            setSubmitMessage(`Error: ${text}`);
+            setErrorMessage(`Failed to submit: ${text}.`);
           })
           .catch((err) => {
-            setSubmitMessage(`Error (${res.statusText}): ${err}`);
+            setErrorMessage(`Error (${res.statusText}): ${err}.`);
           });
       }
     });
@@ -65,6 +65,9 @@ export default function SubmitChallenge() {
                 id="title"
                 required
               />
+			  <p className="help">
+				  Short title for the problem. For example, <code>Calculator</code>, <code>Maze Solver</code>, etc.
+			  </p>
             </div>
           </div>
 
@@ -73,10 +76,13 @@ export default function SubmitChallenge() {
             <div className="control">
               <textarea
                 className="textarea"
-                placeholder="Briefly state the problem description here"
+                placeholder="Description of the problem in detail"
                 id="description"
                 required
               ></textarea>
+			  <p className="help">
+				  First sentences should be a short summary of the problem to catch the reader's attention.
+			  </p>
             </div>
           </div>
 
@@ -128,6 +134,9 @@ export default function SubmitChallenge() {
               <span className="icon is-small is-left">
                 <i className="fas fa-user"></i>
               </span>
+			  <p className="help">
+				  Your name will be displayed on the challenge page. Alias or first name is fine.
+			  </p>
             </div>
           </div>
 
@@ -154,8 +163,7 @@ export default function SubmitChallenge() {
             </p>
           </div>
           <br />
-
-          <p>{submitMessage}</p>
+          <h1 className="title is-5 has-text-danger">{errorMessage}</h1>
         </form>
       ) : (
         <div className="box">

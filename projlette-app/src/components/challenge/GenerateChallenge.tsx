@@ -15,7 +15,7 @@ export default function GenerateChallenge() {
   };
 
   const segmentWidth = 200;
-  const segmentHeight = 150;
+  const segmentHeight = 100;
   const segmentComponent = (problem, index) => {
     return (
       <div
