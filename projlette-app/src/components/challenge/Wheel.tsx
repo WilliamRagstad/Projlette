@@ -47,7 +47,7 @@ export default function Wheel<T>({
 	useEffect(() => {
 		if (segmentsPromise) {
 			segmentsPromise.then((newSegments) => {
-				console.log("New segments: ", newSegments);
+				// console.log("New segments: ", newSegments);
 				setSegments([...segments, ...newSegments]);
 				setSegmentsPromise(null);
 			});
