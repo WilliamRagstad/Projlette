@@ -16,10 +16,15 @@ export default Service(
 		return this.solutions[problemId];
 	}
 
-	public submitSolution(problemId: string, solution: Solution) {
+	public async submitSolution(problemId: string, solution: Solution) {
 		// Validate the fields
-		if (!solution.githubUrl || !solution.githubUrl.match(/^https:\/\/github.com\/.+$/)) {
-			throw "Github url is required and must be a valid github url";
+		if (!solution.githubUrl || !solution.githubUrl.match(/^https:\/\/github.com\/([^\/\n]+)\/([^\/\n]+)$/)) {
+			throw "URL to a GitHub repository is required";
+		}
+		// TODO: Send a request to the repository to see that it exists (not 404)
+		const res = await fetch(solution.githubUrl);
+		if (!res.ok) {
+			throw "The GitHub URL does not point to an existing repository";
 		}
 		if (!solution.author || solution.author.trim().length < 4) {
 			throw "Author is required and must be at least 4 characters long";

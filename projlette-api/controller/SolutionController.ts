@@ -34,7 +34,7 @@ export default class SolutionController extends IController {
 
     let solution = await bodyMappingJSON(request, Solution);
     try {
-      solution = this.solutionService.submitSolution(id, solution);
+      solution = await this.solutionService.submitSolution(id, solution);
       console.log("Adding solution to problem", id, solution);
       ok(response, solution);
     } catch (error) {
