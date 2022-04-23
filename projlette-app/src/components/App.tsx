@@ -69,7 +69,7 @@ function App() {
                   className={tab === 2 ? "is-active" : ""}
                   onClick={() => setTab(2)}
                 >
-                  <a href="#upload">
+                  <a href="#submit">
                     <span className="icon is-small">
                       <i className="fas fa-upload"></i>
                     </span>
