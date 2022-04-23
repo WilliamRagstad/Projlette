@@ -1,15 +1,11 @@
 import * as React from "react";
 // @ts-ignore
-import AllChallenges from "./challenge/AllChallenges.tsx";
+import { Outlet, Link, useLocation } from "react-router-dom";
 // @ts-ignore
-import GenerateChallenge from "./challenge/GenerateChallenge.tsx";
-// @ts-ignore
-import SubmitChallenge from "./challenge/SubmitChallenge.tsx";
-// @ts-ignore
-import Header from "./header/Header.tsx";
+import Header from "../components/header/Header";
 
-function App() {
-  const [tab, setTab] = React.useState(0);
+export default function Home() {
+  const tab = useLocation().pathname.split("/")[1].toLowerCase();
 
   return (
     <div className="App">
@@ -44,37 +40,34 @@ function App() {
             <div className="container">
               <ul>
                 <li
-                  className={tab === 0 ? "is-active" : ""}
-                  onClick={() => setTab(0)}
+                  className={tab === "" ? "is-active" : ""}
                 >
-                  <a href="#generate">
+                  <Link to="/">
                     <span className="icon is-small">
                       <i className="fas fa-plus"></i>
                     </span>
                     Generate Challenge
-                  </a>
+                  </Link>
                 </li>
                 <li
-                  className={tab === 1 ? "is-active" : ""}
-                  onClick={() => setTab(1)}
+                  className={tab === "all" ? "is-active" : ""}
                 >
-                  <a href="#all">
+                  <Link to="/all">
                     <span className="icon is-small">
                       <i className="fas fa-list"></i>
                     </span>
                     All Challenges
-                  </a>
+                  </Link>
                 </li>
                 <li
-                  className={tab === 2 ? "is-active" : ""}
-                  onClick={() => setTab(2)}
+                  className={tab === "submit" ? "is-active" : ""}
                 >
-                  <a href="#submit">
+                  <Link to="/submit">
                     <span className="icon is-small">
                       <i className="fas fa-upload"></i>
                     </span>
                     Submit Challenge
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -84,25 +77,31 @@ function App() {
 
       <section className="section">
         <div className="container">
-          {[<GenerateChallenge />, <AllChallenges />, <SubmitChallenge />][tab]}
+          <Outlet />
         </div>
       </section>
 
-	  <section className="section spacing"></section>
+      <section className="section spacing"></section>
 
       <footer className="footer">
         <div className="content has-text-centered">
           <p>
             <strong>Projlette</strong> by{" "}
-            <a href="https://twitter.com/WilliamRagstad" target="_blank">William Rågstad</a>,
-            Copyright © {new Date().getFullYear()}. The source code is licensed
-            under{" "}
-            <a href="http://opensource.org/licenses/mit-license.php" target="_blank">MIT</a>.
+            <a href="https://twitter.com/WilliamRagstad" target="_blank">
+              William Rågstad
+            </a>
+            , Copyright © {new Date().getFullYear()}. The source code is
+            licensed under{" "}
+            <a
+              href="http://opensource.org/licenses/mit-license.php"
+              target="_blank"
+            >
+              MIT
+            </a>
+            .
           </p>
         </div>
       </footer>
     </div>
   );
 }
-
-export default App;

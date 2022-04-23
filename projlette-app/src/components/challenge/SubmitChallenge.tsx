@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { apiFetch } from "../../util/api";
 import { challengeColor } from "./ChallengeHelper";
 
@@ -144,7 +145,7 @@ export default function SubmitChallenge() {
             <div className="control">
               <label className="checkbox">
                 <input type="checkbox" id="tos" required />
-                &nbsp; I agree to the <a href="#">terms and conditions</a>
+                &nbsp; I agree to the <Link to="/terms" target="_blank">terms and conditions</Link>
               </label>
             </div>
           </div>

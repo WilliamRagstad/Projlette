@@ -58,17 +58,7 @@ export default function GenerateChallenge() {
           challenge from the list of existing challenges.
         </h2>
       </div>
-      <div className="block">
-        <h1 className="title">Goal</h1>
-        <h2 className="subtitle">
-          The goal of the challenge is to write a program that solves the
-          problem given in the challenge in the best possible way to your
-          capabilities and skill level. Share your solution with your peers and
-          the community, get constructive feedback from others, and improve your
-          skills.
-        </h2>
-      </div>
-      <br />
+      <br /><br />
       <div className="columns is-centered">
         <div className="column is-two-thirds">
           <div className="box">

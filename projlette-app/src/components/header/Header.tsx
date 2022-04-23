@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
@@ -12,9 +13,9 @@ export default function Header() {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <a href="/" className="navbar-item">
+          <Link to="/" className="navbar-item">
             <img src="/logo.svg" className="navbar-logo" />
-          </a>
+          </Link>
           <a
             href="#"
             role="button"
