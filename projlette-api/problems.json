@@ -5,7 +5,8 @@
   "difficulty": "easy",
   "tags": ["chores", "app"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "E27C",
   "title": "Pong",
@@ -13,7 +14,8 @@
   "difficulty": "medium",
   "tags": ["game", "old school", "native", "console", "web", "ai"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "P42K",
   "title": "Tic Tac Toe",
@@ -21,7 +23,8 @@
   "difficulty": "hard",
   "tags": ["game", "old school", "native", "console", "web", "ai"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "H30T",
   "title": "The Calculator",
@@ -29,7 +32,8 @@
   "difficulty": "medium",
   "tags": ["language", "evaluate", "math", "app"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "G16L",
   "title": "Movie Database",
@@ -37,7 +41,8 @@
   "difficulty": "medium",
   "tags": ["database", "search", "add", "delete"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "F74Z",
   "title": "Chess",
@@ -45,7 +50,8 @@
   "difficulty": "hard",
   "tags": ["ai", "chess", "game", "old school"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "B15X",
   "title": "Emoji Translator",
@@ -53,7 +59,8 @@
   "difficulty": "easy",
   "tags": ["language", "translate", "emoji", "app"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "id": "D98M",
   "title": "Vending Machine",
@@ -61,7 +68,8 @@
   "difficulty": "medium",
   "tags": ["display", "interface", "virtual", "app"],
   "author": "William",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "title": "Todays Word",
   "description": "An app that displays a selected word for the day with some interesting information to it.",
@@ -69,7 +77,8 @@
   "tags": ["word", "display"],
   "author": "William",
   "id": "V73W",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }, {
   "title": "Hangman",
   "description": "The classic hangman game where one player (or computer) selects a word, and the other tries to guess it.",
@@ -77,5 +86,6 @@
   "tags": ["game", "ai", "old school"],
   "author": "William",
   "id": "Z76Y",
-  "approved": true
+  "approved": true,
+  "createdDate": "2022-04-23T14:47:13.311Z"
 }]

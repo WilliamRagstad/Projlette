@@ -109,6 +109,7 @@ export default Service(
       );
       // Generate a new id
       problem.id = this.generateProblemId();
+      problem.createdDate = new Date();
       problem.approved = false;
       this.previewProblems.push(problem);
       this.writeToLocalFile(this.previewProblemsFilepath, this.previewProblems);

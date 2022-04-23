@@ -17,6 +17,8 @@ export default class Problem {
   author: string;
   @Optional()
   approved?: boolean;
+  @Optional()
+  createdDate: Date;
 
   constructor(
     id: string | undefined = undefined,
@@ -26,6 +28,7 @@ export default class Problem {
     tags: string[],
 	author: string,
 	approved: boolean = false,
+	createdDate: Date | undefined = undefined
   ) {
     this.id = id;
     this.title = title;
@@ -34,5 +37,6 @@ export default class Problem {
     this.tags = tags;
 	this.author = author;
 	this.approved = approved;
+	this.createdDate = createdDate ?? new Date();
   }
 }
