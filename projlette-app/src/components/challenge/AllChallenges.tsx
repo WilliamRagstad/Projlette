@@ -125,49 +125,54 @@ export default function AllChallenges() {
           </div>
         </div>
       </div>
-
-      <table className="table is-bordered is-fullwidth is-striped is-narrow is-hoverable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Author</th>
-            <th>
-              <abbr title="Is Approved">A</abbr>
-            </th>
-            <th>Difficulty</th>
-            <th>Tags</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredChallenges.map((challenge) => (
-            <tr key={challenge.id}>
-              <td className="has-text-centered">
-                <a href={"/problem/" + challenge.id}>
-                  <span style={{ color: challengeColor(challenge.id) }}>
-                    {challenge.id}
-                  </span>
-                </a>
-              </td>
-              <td>
-                <a href={"/problem/" + challenge.id}>
-                  <b>{challenge.title}</b>
-                </a>
-              </td>
-              <td>{challenge.description}</td>
-              <td>
-                <em>{challenge.author}</em>
-              </td>
-              <td className="has-text-centered">
-                {renderApproved(challenge.approved)}
-              </td>
-              <td>{renderDifficulty(challenge.difficulty)}</td>
-              <td>{renderTags(challenge.tags)}</td>
+      <div className="overflow-x-scroll">
+        <table className="table is-bordered is-fullwidth is-striped is-narrow is-hoverable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Author</th>
+              <th>
+                <abbr title="Is Approved">A</abbr>
+              </th>
+              <th>Difficulty</th>
+              <th>Tags</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredChallenges.map((challenge) => (
+              <tr key={challenge.id}>
+                <td className="has-text-centered">
+                  <a href={"/problem/" + challenge.id}>
+                    <span style={{ color: challengeColor(challenge.id) }}>
+                      {challenge.id}
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  <a href={"/problem/" + challenge.id}>
+                    <b>{challenge.title}</b>
+                  </a>
+                </td>
+                <td>
+                  <span className="max-three-lines">
+                    {challenge.description}
+                  </span>
+                </td>
+                <td>
+                  <em>{challenge.author}</em>
+                </td>
+                <td className="has-text-centered">
+                  {renderApproved(challenge.approved)}
+                </td>
+                <td>{renderDifficulty(challenge.difficulty)}</td>
+                <td>{renderTags(challenge.tags)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../../util/api";
 import { challengeColor, renderTags } from "./ChallengeHelper";
 import Wheel from "./Wheel";
-import "./Segment.css";
 import ProblemBox from "./ProblemBox";
 
 export default function GenerateChallenge() {
@@ -16,7 +15,7 @@ export default function GenerateChallenge() {
   };
 
   const segmentWidth = 200;
-  const segmentHeight = 100;
+  const segmentHeight = 120;
   const segmentComponent = (problem, index) => {
     return (
       <div
@@ -34,7 +33,7 @@ export default function GenerateChallenge() {
             {problem.title}
           </b>
         </div>
-        <div className="segment-description">{problem.description}</div>
+        <div className="max-three-lines">{problem.description}</div>
       </div>
     );
   };

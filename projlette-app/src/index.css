@@ -15,3 +15,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.max-three-lines {
+    /* height: 60px; */
+    /* white-space: nowrap; */
+    /* width: 170px; */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.overflow-x-scroll {
+	overflow-x: auto;
+    overflow-y: hidden;
+}

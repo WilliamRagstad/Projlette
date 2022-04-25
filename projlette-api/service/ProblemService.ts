@@ -42,9 +42,6 @@ export default Service(
     public getProblemById(id: string) {
       const problem = this.problems.find((problem) => problem.id === id) ??
         this.previewProblems.find((problem) => problem.id === id);
-		if (!problem) {
-			throw "Problem with id " + id + " could not be found";
-		}
 		return problem;
     }
 
