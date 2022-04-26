@@ -4,6 +4,7 @@ import "./Wheel.css";
 
 export default function Wheel<T>({
 	segmentGenerator,
+	segmentGeneratorReady,
 	initialSegmentCount,
 	onDone,
 	onFail,
@@ -16,6 +17,7 @@ export default function Wheel<T>({
 	spinLengthMax = 1500,
   }: {
 	segmentGenerator: (count) => Promise<T[]>;
+	segmentGeneratorReady: boolean;
 	initialSegmentCount: number;
 	onDone: (winner: T, index?: number) => void;
 	onFail: (msg: string) => void;
@@ -40,16 +42,20 @@ export default function Wheel<T>({
 
 	// Initial preload of first set of segments
 	useEffect(() => {
-		preloadSegments(initialSegmentCount);
-	}, []);
+		if (segmentGeneratorReady) {
+			preloadSegments(initialSegmentCount);
+		}
+	}, [segmentGeneratorReady]);
 
 	// Handle promise when new segments are fetched
 	useEffect(() => {
 		if (segmentsPromise) {
 			segmentsPromise.then((newSegments) => {
-				// console.log("New segments: ", newSegments);
-				setSegments([...segments, ...newSegments]);
-				setSegmentsPromise(null);
+				if (newSegments) {
+					// console.log("New segments: ", newSegments);
+					setSegments(segments.concat(newSegments));
+					setSegmentsPromise(null);
+				}
 			});
 		}
 	}, [segmentsPromise]);
@@ -71,14 +77,13 @@ export default function Wheel<T>({
 	  }
 	  return undefined;
 	};
-	const getSegments = () => segments;
 	const doSpin = () => {
 	  if (spinning) return;
 	  setSpinning(true);
 
 	  const nextOffset = prevOffset + Math.random() * (spinLengthMax - spinLengthMin) + spinLengthMin;
 	  const passingSegments = (nextOffset - prevOffset) / segmentWidth;
-	  console.log("Passing segments: ", passingSegments);
+	  // console.log("Passing segments: ", passingSegments);
 	  preloadSegments(Math.floor(passingSegments));
 	  setOffset(nextOffset);
 

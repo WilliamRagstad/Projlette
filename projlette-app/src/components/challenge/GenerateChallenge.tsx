@@ -1,17 +1,43 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { apiFetch } from "../../util/api";
-import { challengeColor, renderTags } from "./ChallengeHelper";
+import { challengeColor } from "./ChallengeHelper";
 import Wheel from "./Wheel";
 import ProblemBox from "./ProblemBox";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
+import { setProp } from "../../util/firebase";
 
 export default function GenerateChallenge() {
+  const [allChallenges, setAllChallenges] = useState([]);
   const [winner, setWinner] = useState(null);
 
+  useEffect(() => {
+    getDocs(collection(db, "problems")).then((snap) =>
+      setAllChallenges(
+        snap.docs.map((d) => setProp(d.data(), { id: d.id, approved: true }))
+      )
+    );
+  }, []);
+
   const generator = async (count) => {
-    // Fetch the data from the API
-    const response = await apiFetch("/problem/random/" + count);
-    return await response.json();
+    if (allChallenges.length === 0) {
+      return null;
+    }
+
+    // Select random problems from all challenges
+    const selected = [];
+    for (let i = 0; i < count; i++) {
+      const index = Math.floor(Math.random() * allChallenges.length);
+      if (
+        count <= allChallenges.length &&
+        selected.find((s) => s.id === allChallenges[index].id)
+      ) {
+        i--;
+      } else {
+        selected.push(allChallenges[index]);
+      }
+    }
+    return selected;
   };
 
   const segmentWidth = 200;
@@ -70,6 +96,7 @@ export default function GenerateChallenge() {
             </p>
             <Wheel
               segmentGenerator={generator}
+			  segmentGeneratorReady={allChallenges.length > 0}
               initialSegmentCount={20}
               onDone={onDone}
               onFail={onFail}
