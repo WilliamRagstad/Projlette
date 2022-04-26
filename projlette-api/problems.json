@@ -20,7 +20,7 @@
   "id": "P42K",
   "title": "Tic Tac Toe",
   "description": "The famous tic tac toe game. Maybe add an AI or multiplayer?",
-  "difficulty": "hard",
+  "difficulty": "medium",
   "tags": ["game", "old school", "native", "console", "web", "ai"],
   "author": "William",
   "approved": true,
@@ -88,4 +88,122 @@
   "id": "Z76Y",
   "approved": true,
   "createdDate": "2022-04-23T14:47:13.311Z"
+}, {
+  "title": "Number Guessing Game",
+  "description": "Guess a secret number randomly picked between 1 and 100.",
+  "difficulty": "Easy",
+  "tags": [
+      "game",
+      "old school",
+      "binary search",
+      "math"
+  ],
+  "author": "William",
+  "id": "W12P",
+  "approved": false,
+  "createdDate": "2022-04-23T14:47:13.311Z"
+}, {
+  "title": "Public Transport",
+  "description": "An app that shows the timetable for trains and public transport nearby.",
+  "difficulty": "Medium",
+  "tags": [
+      "time",
+      "transport",
+      "app"
+  ],
+  "author": "William",
+  "id": "L30Q",
+  "approved": false,
+  "createdDate": "2022-04-23T14:47:13.311Z"
+}, {
+  "title": "Movie Quotes",
+  "description": "There are plenty of fun and interesting movie characters Maybe write a program that prints random quotes from your favorite characters or a specific movie? Mix and match? Add some ASCII art of the characters to make them come alive, or maybe even a speech synthesizer if you want to go the extra mile.",
+  "difficulty": "Easy",
+  "tags": ["quotes", "characters", "movie", "display", "ascii"],
+  "author": "Mark",
+  "id": "A01D",
+  "createdDate": "2022-04-25T10:21:24.791Z",
+  "approved": false
+},
+{
+  "title": "Cowsay Replica",
+  "description": "Recreate the classic Cowsay program, and add your own characters\nCowsay is a program that generates ASCII art pictures of a cow with a message. It can also generate pictures using pre-made images of other animals, such as Tux the Penguin, the Linux mascot.",
+  "difficulty": "Easy",
+  "tags": ["display", "cowsay", "console", "ascii"],
+  "author": "Steven",
+  "id": "V89Y",
+  "createdDate": "2022-04-25T10:28:45.141Z",
+  "approved": false
+},
+{
+  "title": "The Matrix",
+  "description": "Everyone loves the visual effect of the falling binary code rain in The Matrix.  Recreate the famous Matrix rain effect of falling green characters in a terminal yourself .",
+  "difficulty": "Easy",
+  "tags": ["matrix", "rain", "display"],
+  "author": "Frank J",
+  "id": "H03U",
+  "createdDate": "2022-04-25T10:37:26.416Z",
+  "approved": false
+},
+{
+  "title": "Terminal Image Viewer",
+  "description": "Trying to make an image viewer terminal application, see if you can fiddle around with different methods of rendering images for low resolution console displays. Maybe attempt some ASCII art approach, or may be something were advanced such as marching cubes based on contrast differences?.",
+  "difficulty": "Hard",
+  "tags": ["image", "format", "display", "ascii", "terminal"],
+  "author": "Jsph7",
+  "id": "D38V",
+  "createdDate": "2022-04-25T10:42:02.779Z",
+  "approved": false
+},
+{
+  "title": "Timer",
+  "description": "A timer that is configurable and count downs to 0, then alerts the user that the time is up.\nEasy to build for the web, a bit harder for console applications.",
+  "difficulty": "Easy",
+  "tags": ["timer", "web", "terminal"],
+  "author": "Peterson K",
+  "id": "O57K",
+  "createdDate": "2022-04-25T11:01:24.977Z",
+  "approved": false
+}, {
+  "title": "Password Generator",
+  "description": "In todays society, it is important to secure online accounts with strong passwords Build a program that can generate secure passwords through any interface or command line program. Make it as nice and detailed as you can.",
+  "difficulty": "Easy",
+  "tags": [
+      "password",
+      "generator",
+      "util"
+  ],
+  "author": "Dave",
+  "id": "X80L",
+  "createdDate": "2022-04-25T11:08:18.123Z",
+  "approved": false
+},
+{
+  "title": "Roll The Dice",
+  "description": "Now you might have ended up here by chance, which is a bit ironic. In this challenge, you will program an app where you can roll the dice or generate random choices of any shape. The results should be displayed in some nice way, maybe render an ASCII dice?.",
+  "difficulty": "Easy",
+  "tags": [
+      "random",
+      "dice",
+      "ascii",
+      "generator"
+  ],
+  "author": "Marcus F",
+  "id": "R07Q",
+  "createdDate": "2022-04-25T11:15:12.589Z",
+  "approved": false
+},
+{
+  "title": "Live Clock",
+  "description": "A nice display that shows the clock Take on the challenge of building the terminal or the web How advanced clock can you create?\nChoose whether it should be analog or digital, AM  PM or 24-hour.",
+  "difficulty": "Easy",
+  "tags": [
+      "time",
+      "clock",
+      "display"
+  ],
+  "author": "Anonymous",
+  "id": "C36S",
+  "createdDate": "2022-04-25T11:18:31.554Z",
+  "approved": false
 }]
