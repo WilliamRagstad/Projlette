@@ -8,47 +8,53 @@ import {
   renderDifficulty,
   renderTags,
 } from "./ChallengeHelper";
+import { getAuthor, setProp } from "../../util/firebase";
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);
   const [previewChallenges, setPreviewChallenges] = React.useState([]);
   const [filteredChallenges, setFilteredChallenges] = React.useState([]);
-  const [authors, setAuthors] = React.useState([]);
+  // const [authors, setAuthors] = React.useState({});
+const authors = {};
 
-  const setProp = (challenge, props: Record<string, any>) => {
-    for (let prop in props) {
-      challenge[prop] = props[prop];
+  const loadAuthor = (authorId) => {
+    if (authorId in authors) {
+      return;
     }
-    return challenge;
-  };
+	console.log("Loading: " + authorId);
 
-  const getAuthor = (username) => {
-    if (authors[username]) {
-	  return authors[username];
-	}
-	// Fetch from firebase
-	getDoc(doc(db, "users", username)).then((doc) => {
-		if (doc.exists) {
-			const data = doc.data();
-			setAuthors({ ...authors, [username]: data });
+    // setAuthors({ ...authors, [authorId]: {} }); // Indicate that we are loading
+    authors[authorId] = {}; // Indicate that we are loading
+	getAuthor(authorId).then((author) => {
+		if (author) {
+			console.log("Found author:", author);
+			// setAuthors({ ...authors, [authorId]: author });
+			authors[authorId] = author;
+		} else {
+			console.log("Author '" + authorId + "' not found");
+			// setAuthors({ ...authors, [authorId]: null });
+			authors[authorId] = null;
 		}
-	});
-	return null;
+    });
   };
 
   useEffect(() => {
     onSnapshot(collection(db, "problems"), (snapshot) => {
       setChallenges(
-        snapshot.docs.map((d) =>
-          setProp(d.data(), { id: d.id, approved: true })
-        )
+        snapshot.docs.map((d) => {
+          const data = d.data();
+          loadAuthor(data.author.id);
+          return setProp(data, { id: d.id, approved: true, author: data.author.id });
+        })
       );
     });
     onSnapshot(collection(db, "problems-awaiting"), (snapshot) => {
       setPreviewChallenges(
-        snapshot.docs.map((d) =>
-          setProp(d.data(), { id: d.id, approved: false })
-        )
+        snapshot.docs.map((d) => {
+          const data = d.data();
+          loadAuthor(data.author.id);
+          return setProp(data, { id: d.id, approved: false, author: data.author.id });
+        })
       );
     });
   }, []);
@@ -106,6 +112,8 @@ export default function AllChallenges() {
     }, searchBuckets);
     setFilteredChallenges(searchResults.flat());
   };
+
+  console.log(filteredChallenges);
 
   return (
     <div id="all">
@@ -197,7 +205,11 @@ export default function AllChallenges() {
                   </span>
                 </td>
                 <td>
-                  <em>{challenge.author.id}</em>
+                  <em>
+                    {authors[challenge.author]
+                      ? authors[challenge.author].username
+                      : challenge.author}
+                  </em>
                 </td>
                 <td className="has-text-centered">
                   {renderApproved(challenge.approved)}
