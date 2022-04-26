@@ -1,18 +1,13 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { db, getCurrentUser } from "../../firebase/firebase";
+import { auth, db, getCurrentUser } from "../../firebase/firebase";
 import { challengeColor } from "./ChallengeHelper";
 
 export default function SubmitChallenge() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [createdProblem, setCreatedProblem] = React.useState(null);
-  const [user, setUser] = React.useState(null);
-  React.useEffect(() => {
-    getCurrentUser().then((user) => {
-      setUser(user);
-    });
-  }, []);
+  const user = auth.currentUser;
 
   const randomFrom = (list: string) => {
     return list[Math.floor(Math.random() * list.length)];
@@ -73,7 +68,7 @@ export default function SubmitChallenge() {
         difficulty: difficulty,
         createdDate: new Date(),
         tags: tags,
-        author: doc(db, "users", user.source.id),
+        author: doc(db, "users/" + user.uid),
       };
       setDoc(doc(db, "problems-awaiting", id), data)
         .then(() => {
