@@ -15,26 +15,26 @@ export default function AllChallenges() {
   const [previewChallenges, setPreviewChallenges] = React.useState([]);
   const [filteredChallenges, setFilteredChallenges] = React.useState([]);
   // const [authors, setAuthors] = React.useState({});
-const authors = {};
+  const authors = {};
 
   const loadAuthor = (authorId) => {
     if (authorId in authors) {
       return;
     }
-	console.log("Loading: " + authorId);
+    console.log("Loading: " + authorId);
 
     // setAuthors({ ...authors, [authorId]: {} }); // Indicate that we are loading
     authors[authorId] = {}; // Indicate that we are loading
-	getAuthor(authorId).then((author) => {
-		if (author) {
-			console.log("Found author:", author);
-			// setAuthors({ ...authors, [authorId]: author });
-			authors[authorId] = author;
-		} else {
-			console.log("Author '" + authorId + "' not found");
-			// setAuthors({ ...authors, [authorId]: null });
-			authors[authorId] = null;
-		}
+    getAuthor(authorId).then((author) => {
+      if (author) {
+        console.log("Found author:", author);
+        // setAuthors({ ...authors, [authorId]: author });
+        authors[authorId] = author;
+      } else {
+        console.log("Author '" + authorId + "' not found");
+        // setAuthors({ ...authors, [authorId]: null });
+        authors[authorId] = null;
+      }
     });
   };
 
@@ -44,7 +44,11 @@ const authors = {};
         snapshot.docs.map((d) => {
           const data = d.data();
           loadAuthor(data.author.id);
-          return setProp(data, { id: d.id, approved: true, author: data.author.id });
+          return setProp(data, {
+            id: d.id,
+            approved: true,
+            author: data.author.id,
+          });
         })
       );
     });
@@ -53,7 +57,11 @@ const authors = {};
         snapshot.docs.map((d) => {
           const data = d.data();
           loadAuthor(data.author.id);
-          return setProp(data, { id: d.id, approved: false, author: data.author.id });
+          return setProp(data, {
+            id: d.id,
+            approved: false,
+            author: data.author.id,
+          });
         })
       );
     });
