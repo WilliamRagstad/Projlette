@@ -1,10 +1,29 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/footer/Footer";
 // @ts-ignore
 import Header from "../components/header/Header";
+import { auth } from "../firebase/firebase";
 
-export default function About() {
+export default function Login() {
+  const [error, setError] = React.useState<string | null>(null);
+  const navigator = useNavigate();
+  const onLogin = () => {
+    const email = (document.getElementById("email") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+    signInWithEmailAndPassword(auth, email, password)
+      .then((user) => {
+        console.log(user);
+		navigator(-1);
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log(JSON.stringify(error));
+      });
+  };
+
   return (
     <div className="App">
       <section className="hero is-small is-info">
@@ -14,8 +33,7 @@ export default function About() {
 
         <div className="hero-body">
           <div className="container has-text-centered">
-            <p className="title">About Projlette</p>
-            <p className="subtitle">We're all about fun and learning!</p>
+            <p className="title">Login to Projlette</p>
             <br />
           </div>
         </div>
@@ -23,78 +41,58 @@ export default function About() {
 
       <section className="section">
         <div className="container">
-          <div className="columns">
-            <div className="column">
-              <div className="block">
-                <h1 className="title">Goal</h1>
-                <h2 className="subtitle">
-                  The goal of the challenge is to write a program that solves
-                  the problem given in the challenge in the best possible way to
-                  your capabilities and skill level.
-                  <br />
-                  Share your solution with your peers and the community, get
-                  constructive feedback from others, and improve your skills.
-                </h2>
-                <a
-                  href={
-                    "https://twitter.com/intent/tweet?text=" +
-                    encodeURIComponent(
-                      "I solve programming challenges on @Projlette!🎉\n#projlette"
-                    )
-                  }
-                  className="button"
-                  target="_blank"
-                >
-                  <span className="icon is-medium">
-                    <i className="fab fa-twitter"></i>
-                  </span>
-                  &nbsp;&nbsp; Share on Twitter
-                </a>
-              </div>
-            </div>
-            <div className="column">
-              <div className="block">
-                <h1 className="title">How it Works</h1>
-                <h2 className="subtitle">
-                  The challenges are designed to be as easy as possible (in
-                  theory). Then it's up to you to write the code and perfect it
-                  as much as you can.
-                  <br />
-                  <br />
-                  Randomly pick a challenge on the homepage to get started.
-                </h2>
-                <Link to="/" className="button">
-                  <span className="icon">
-                    <i className="fas fa-code"></i>
-                  </span>
-                  &nbsp;&nbsp; Pick a challenge
-                </Link>
-              </div>
-            </div>
-            <div className="column">
-              <div className="block">
-                <h1 className="title">Submit Problems</h1>
-                <h2 className="subtitle">
-                  Have you recently solved a challenge of your own outside of
-                  Projlette, and feel like it could be suitable for a challenge?
-                  <br />
-                  <br />
-                  Submit it to the challenge page to share it with the
-                  community.
-                </h2>
-                <Link to="/submit" className="button">
-                  <span className="icon">
-                    <i className="fas fa-lightbulb"></i>
-                  </span>
-                  &nbsp;&nbsp; Submit your challenge
-                </Link>
+          <div className="columns is-centered">
+            <div className="column is-half">
+              <div className="box">
+                <h1 className="title">Login to your account</h1>
+                <p className="subtitle">Enter your credentials to login.</p>
+                <form>
+                  <div className="field">
+                    <label className="label">Email</label>
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="text"
+                        placeholder="Email or Username"
+                        id="email"
+                      />
+                    </div>
+                  </div>
+                  <div className="field">
+                    <label className="label">Password</label>
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="password"
+                        placeholder="Password"
+                        id="password"
+                      />
+                    </div>
+                  </div>
+                  <div className="field">
+                    <div className="control">
+                      <button
+                        type="button"
+                        className="button is-success"
+                        onClick={onLogin}
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </div>
+                  <div className="field">
+                    <div className="control">
+                      <p className="help is-danger">{error}</p>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }

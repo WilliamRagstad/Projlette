@@ -10,6 +10,7 @@ import SubmitChallenge from "./components/challenge/SubmitChallenge";
 import NoPage from "./pages/NoPage";
 import About from "./pages/About";
 import Problem from "./pages/Problem";
+import Login from "./pages/Login";
 
 // TODO: Set this to true when deploying to production
 export const PRODUCTION_MODE = false;
@@ -26,6 +27,7 @@ root.render(
         </Route>
 		<Route path="about" element={<About />}/>
 		<Route path="problem/:id" element={<Problem />}/>
+		<Route path="login" element={<Login />}/>
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
