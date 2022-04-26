@@ -1,10 +1,20 @@
 import * as React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
 import "./Header.css";
 
 export default function Header() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [user, setUser] = useState(auth.currentUser);
+  const navigator = useNavigate();
+
+  const onSignOut = () => {
+    auth.signOut();
+	setUser(null);
+	navigator("/");
+  };
+
   return (
     <header className="App-header">
       <nav
@@ -36,9 +46,9 @@ export default function Header() {
           className={"navbar-menu " + (hamburgerOpen ? "is-active" : "")}
         >
           <div className="navbar-start">
-            <a href="/about" className="navbar-item">
+            <Link to="/about" className="navbar-item">
               About
-            </a>
+            </Link>
 
             <a
               href="https://twitter.com/WilliamRagstad"
@@ -53,16 +63,25 @@ export default function Header() {
           </div>
 
           <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons">
-                <Link to="signup" className="button is-success">
+            {user ? (
+              <div className="navbar-item buttons">
+                <div className="mr-5">
+                  <strong>{user.displayName ?? user.email}</strong>
+                </div>
+                <button className="button" onClick={onSignOut}>
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <div className="navbar-item buttons">
+                <Link to="/signup" className="button is-success">
                   Sign up
                 </Link>
-                <Link to="login" className="button is-light">
+                <Link to="/login" className="button is-light">
                   Log in
                 </Link>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </nav>
