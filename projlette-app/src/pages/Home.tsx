@@ -1,6 +1,7 @@
 import * as React from "react";
 // @ts-ignore
 import { Outlet, Link, useLocation } from "react-router-dom";
+import Footer from "../components/footer/Footer";
 // @ts-ignore
 import Header from "../components/header/Header";
 
@@ -83,25 +84,7 @@ export default function Home() {
 
       <section className="section spacing"></section>
 
-      <footer className="footer">
-        <div className="content has-text-centered">
-          <p>
-            <strong>Projlette</strong> by{" "}
-            <a href="https://twitter.com/WilliamRagstad" target="_blank">
-              William Rågstad
-            </a>
-            , Copyright © {new Date().getFullYear()}. The source code is
-            licensed under{" "}
-            <a
-              href="http://opensource.org/licenses/mit-license.php"
-              target="_blank"
-            >
-              MIT
-            </a>
-            .
-          </p>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }
