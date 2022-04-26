@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { apiFetch } from "../../util/api";
+import { db } from "../../firebase/firebase";
+import { collection, query, onSnapshot, getDoc, doc } from "firebase/firestore";
 import {
   challengeColor,
   renderApproved,
@@ -10,16 +11,51 @@ import {
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);
+  const [previewChallenges, setPreviewChallenges] = React.useState([]);
   const [filteredChallenges, setFilteredChallenges] = React.useState([]);
+  const [authors, setAuthors] = React.useState([]);
+
+  const setProp = (challenge, props: Record<string, any>) => {
+    for (let prop in props) {
+      challenge[prop] = props[prop];
+    }
+    return challenge;
+  };
+
+  const getAuthor = (username) => {
+    if (authors[username]) {
+	  return authors[username];
+	}
+	// Fetch from firebase
+	getDoc(doc(db, "users", username)).then((doc) => {
+		if (doc.exists) {
+			const data = doc.data();
+			setAuthors({ ...authors, [username]: data });
+		}
+	});
+	return null;
+  };
+
   useEffect(() => {
-    apiFetch("/problem/all/")
-      .then((res) => res.json())
-      .then(setChallenges);
+    onSnapshot(collection(db, "problems"), (snapshot) => {
+      setChallenges(
+        snapshot.docs.map((d) =>
+          setProp(d.data(), { id: d.id, approved: true })
+        )
+      );
+    });
+    onSnapshot(collection(db, "problems-awaiting"), (snapshot) => {
+      setPreviewChallenges(
+        snapshot.docs.map((d) =>
+          setProp(d.data(), { id: d.id, approved: false })
+        )
+      );
+    });
   }, []);
 
   useEffect(() => {
-    setFilteredChallenges(challenges);
-  }, [challenges]);
+    setFilteredChallenges(challenges.concat(previewChallenges));
+  }, [challenges, previewChallenges]);
 
   const onSearch = () => {
     // Filter through the challenges and update filteredChallenges
@@ -161,7 +197,7 @@ export default function AllChallenges() {
                   </span>
                 </td>
                 <td>
-                  <em>{challenge.author}</em>
+                  <em>{challenge.author.id}</em>
                 </td>
                 <td className="has-text-centered">
                   {renderApproved(challenge.approved)}
