@@ -9,21 +9,6 @@ import {
 } from "./ChallengeHelper";
 
 export default function ProblemBox({ problem, linkToProblem = false }) {
-  const [author, setAuthor] = React.useState(null);
-  React.useEffect(() => {
-    console.log(problem.author);
-
-    getDoc(problem.author)
-      .then((snap) => {
-        if (snap.exists()) {
-          setAuthor(snap.data());
-        } else {
-          console.log("Author not found");
-          setAuthor(null);
-        }
-      })
-      .catch((err) => setAuthor(null));
-  }, []);
   return (
     <div className="box">
       <div className="columns is-gapless is-mobile">
@@ -33,7 +18,7 @@ export default function ProblemBox({ problem, linkToProblem = false }) {
             <span style={{ color: challengeColor(problem.id) }}>
               <b>{problem.id}</b>
             </span>{" "}
-            by <em>{author ? author.username : "Unknown"}</em>
+            by <em>{problem.authorName ?? "Unknown"}</em>
           </h2>
         </div>
         <div className="column has-text-right">
