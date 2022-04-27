@@ -11,6 +11,7 @@ import NoPage from "./pages/NoPage";
 import About from "./pages/About";
 import Problem from "./pages/Problem";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 // TODO: Set this to true when deploying to production
 export const PRODUCTION_MODE = false;
@@ -28,6 +29,7 @@ root.render(
 		<Route path="about" element={<About />}/>
 		<Route path="problem/:id" element={<Problem />}/>
 		<Route path="login" element={<Login />}/>
+		<Route path="signup" element={<SignUp />}/>
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
