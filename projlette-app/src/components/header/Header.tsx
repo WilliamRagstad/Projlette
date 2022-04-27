@@ -1,18 +1,24 @@
 import * as React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/firebase";
+import { auth, getCurrentUser } from "../../firebase/firebase";
 import "./Header.css";
 
 export default function Header() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const [user, setUser] = useState(auth.currentUser);
+  const [user, setUser] = useState<any>(
+    auth.currentUser ? { source: auth.currentUser } : null
+  );
   const navigator = useNavigate();
+
+  React.useEffect(() => {
+    getCurrentUser().then(setUser);
+  }, []);
 
   const onSignOut = () => {
     auth.signOut();
-	setUser(null);
-	navigator("/");
+    setUser(null);
+    navigator("/");
   };
 
   return (
@@ -46,6 +52,15 @@ export default function Header() {
           className={"navbar-menu " + (hamburgerOpen ? "is-active" : "")}
         >
           <div className="navbar-start">
+            <Link to="/" className="navbar-item">
+              Generate
+            </Link>
+            <Link to="/all" className="navbar-item">
+              All
+            </Link>
+            <Link to="/submit" className="navbar-item">
+              Submit
+            </Link>
             <Link to="/about" className="navbar-item">
               About
             </Link>
@@ -63,10 +78,11 @@ export default function Header() {
           </div>
 
           <div className="navbar-end">
-            {user ? (
+            {(user && user.source) ? (
               <div className="navbar-item buttons">
                 <div className="mr-5">
-                  <strong>{user.displayName ?? user.email}</strong>
+					Logged in as&nbsp;
+                  <strong>{user.username ?? user.source.email}</strong>
                 </div>
                 <button className="button" onClick={onSignOut}>
                   Log out
