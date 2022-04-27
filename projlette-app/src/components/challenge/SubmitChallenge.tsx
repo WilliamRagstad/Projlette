@@ -216,7 +216,7 @@ export default function SubmitChallenge() {
                 <input type="checkbox" id="tos" required />
                 &nbsp; I agree to the{" "}
                 <Link to="/terms" target="_blank">
-                  terms and conditions
+                  terms and conditions.
                 </Link>
               </label>
             </div>
