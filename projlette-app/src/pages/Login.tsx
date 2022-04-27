@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/footer/Footer";
 // @ts-ignore
 import Header from "../components/header/Header";
@@ -75,9 +75,19 @@ export default function Login() {
                         type="button"
                         className="button is-success"
                         onClick={onLogin}
+						style={{
+							verticalAlign: "middle",
+						}}
                       >
                         Login
                       </button>
+					  <Link to="/signup" className="ml-4" style={{
+						verticalAlign: "middle",
+					}}>Create an account</Link>
+					&nbsp;&nbsp;|&nbsp;&nbsp;
+					  <a href="#" style={{
+						verticalAlign: "middle",
+					}}>Send password reset</a>
                     </div>
                   </div>
                   <div className="field">
