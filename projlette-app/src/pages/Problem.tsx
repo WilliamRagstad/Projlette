@@ -1,15 +1,14 @@
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import * as React from "react";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import {
-  challengeColor,
-  renderTags,
-} from "../components/challenge/ChallengeHelper";
+import { useParams } from "react-router-dom";
 import ProblemBox from "../components/challenge/ProblemBox";
 import Footer from "../components/footer/Footer";
 // @ts-ignore
 import Header from "../components/header/Header";
+import { db } from "../firebase/firebase";
 import { apiFetch } from "../util/api";
+import { setProp } from "../util/prop";
 
 export default function Problem() {
   const { id } = useParams();
@@ -19,15 +18,29 @@ export default function Problem() {
   const [submitError, setSubmitError] = React.useState("");
   const [submitSuccess, setSubmitSuccess] = React.useState("");
   useEffect(() => {
-    apiFetch(`/problem/${id}`)
-      .then((res) => res.json())
-      .then(setProblem)
-      .catch(setError);
-    apiFetch(`/solutions/${id}`).then((res) => {
-      if (res.ok) {
-        return res.json().then(setSolutions);
-      }
-    });
+	// fetch problem
+    getDoc(doc(db, "problems", id)).then(snap => {
+		if (snap.exists()) {
+			setProblem(setProp(snap.data(), {
+				approved: true
+			}));
+		} else {
+			// Try find awaiting problem
+			getDoc(doc(db, "problems-awaiting", id)).then(snap => {
+				if (snap.exists()) {
+					setProblem(setProp(snap.data(), {
+						approved: false
+					}));
+				} else {
+					setError("Problem not found");
+				}
+			});
+		}
+	});
+	  // TODO: Fetch all solutions
+	  getDocs(collection(db, "problems", id, "solutions")).then(snap => {
+		  setSolutions(snap.docs.map(doc => doc.data()));
+	  });
   }, []);
   const onSubmitSolution: React.MouseEventHandler<HTMLAnchorElement> = (
     e: React.MouseEvent<HTMLAnchorElement>
@@ -38,32 +51,37 @@ export default function Problem() {
       .value;
     const author = (document.getElementById("author") as HTMLInputElement)
       .value;
-    apiFetch(`/solutions/${id}`, {
-      method: "POST",
-      body: JSON.stringify({
-        githubUrl,
-        language,
-        author,
-      }),
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((json) => {
-          setSubmitSuccess(`Successfully submitted solution to ${id}!`);
-          setSubmitError("");
-          setSolutions([...solutions, json]);
-        });
-      } else {
-        res
-          .text()
-          .then((text) => {
-            setSubmitError(`Failed to submit: ${text}.`);
-          })
-          .catch((err) => {
-            setSubmitError(`Error (${res.statusText}): ${err}.`);
-          });
-      }
-    });
+	  // TODO: Submit new awaiting solution
+    // apiFetch(`/solutions/${id}`, {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     githubUrl,
+    //     language,
+    //     author,
+    //   }),
+    // }).then((res) => {
+    //   if (res.ok) {
+    //     res.json().then((json) => {
+    //       setSubmitSuccess(`Successfully submitted solution to ${id}!`);
+    //       setSubmitError("");
+    //       setSolutions([...solutions, json]);
+    //     });
+    //   } else {
+    //     res
+    //       .text()
+    //       .then((text) => {
+    //         setSubmitError(`Failed to submit: ${text}.`);
+    //       })
+    //       .catch((err) => {
+    //         setSubmitError(`Error (${res.statusText}): ${err}.`);
+    //       });
+    //   }
+    // });
   };
+
+  console.log(solutions);
+
+
   return (
     <div className="App">
       <section className="hero is-small is-info">
@@ -77,7 +95,7 @@ export default function Problem() {
               {problem ? problem.title : "Unknown Problem"}
             </h1>
             <h2 className="subtitle">
-              By <em>{problem ? problem.author : "Unknown Author"}</em> /{" "}
+              By <em>{problem ? problem.authorName : "Unknown Author"}</em> /{" "}
               {problem
                 ? new Date(problem.createdDate).toLocaleDateString()
                 : ""}
@@ -108,7 +126,6 @@ export default function Problem() {
                             <th>Link</th>
                             <th>Language</th>
                             <th>Author</th>
-                            <th>Date</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -121,12 +138,7 @@ export default function Problem() {
                               </td>
                               <td>{solution.language}</td>
                               <td>
-                                <em>{solution.author}</em>
-                              </td>
-                              <td>
-                                {new Date(
-                                  solution.createdDate
-                                ).toLocaleDateString()}
+                                <em>{solution.authorName}</em>
                               </td>
                             </tr>
                           ))}
