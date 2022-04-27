@@ -14,55 +14,26 @@ export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);
   const [previewChallenges, setPreviewChallenges] = React.useState([]);
   const [filteredChallenges, setFilteredChallenges] = React.useState([]);
-  // const [authors, setAuthors] = React.useState({});
-  const authors = {};
-
-  const loadAuthor = (authorId) => {
-    if (authorId in authors) {
-      return;
-    }
-    console.log("Loading: " + authorId);
-
-    // setAuthors({ ...authors, [authorId]: {} }); // Indicate that we are loading
-    authors[authorId] = {}; // Indicate that we are loading
-    getAuthor(authorId).then((author) => {
-      if (author) {
-        console.log("Found author:", author);
-        // setAuthors({ ...authors, [authorId]: author });
-        authors[authorId] = author;
-      } else {
-        console.log("Author '" + authorId + "' not found");
-        // setAuthors({ ...authors, [authorId]: null });
-        authors[authorId] = null;
-      }
-    });
-  };
 
   useEffect(() => {
     onSnapshot(collection(db, "problems"), (snapshot) => {
       setChallenges(
-        snapshot.docs.map((d) => {
-          const data = d.data();
-          loadAuthor(data.author.id);
-          return setProp(data, {
+        snapshot.docs.map((d) =>
+          setProp(d.data(), {
             id: d.id,
             approved: true,
-            author: data.author.id,
-          });
-        })
+          })
+        )
       );
     });
     onSnapshot(collection(db, "problems-awaiting"), (snapshot) => {
       setPreviewChallenges(
-        snapshot.docs.map((d) => {
-          const data = d.data();
-          loadAuthor(data.author.id);
-          return setProp(data, {
+        snapshot.docs.map((d) =>
+          setProp(d.data(), {
             id: d.id,
             approved: false,
-            author: data.author.id,
-          });
-        })
+          })
+        )
       );
     });
   }, []);
@@ -214,9 +185,7 @@ export default function AllChallenges() {
                 </td>
                 <td>
                   <em>
-                    {authors[challenge.author]
-                      ? authors[challenge.author].username
-                      : challenge.author}
+                    {challenge.authorName}
                   </em>
                 </td>
                 <td className="has-text-centered">
