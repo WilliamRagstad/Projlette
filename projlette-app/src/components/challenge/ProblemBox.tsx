@@ -11,16 +11,18 @@ import {
 export default function ProblemBox({ problem, linkToProblem = false }) {
   const [author, setAuthor] = React.useState(null);
   React.useEffect(() => {
-	  console.log(problem.author);
+    console.log(problem.author);
 
-    getDoc(problem.author).then((snap) => {
-		if (snap.exists()) {
-			setAuthor(snap.data());
-		} else {
-			console.log("Author not found");
-			setAuthor(null);
-		}
-	}).catch((err) => setAuthor(null));
+    getDoc(problem.author)
+      .then((snap) => {
+        if (snap.exists()) {
+          setAuthor(snap.data());
+        } else {
+          console.log("Author not found");
+          setAuthor(null);
+        }
+      })
+      .catch((err) => setAuthor(null));
   }, []);
   return (
     <div className="box">
