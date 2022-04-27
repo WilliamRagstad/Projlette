@@ -79,9 +79,6 @@ export default function Problem() {
     // });
   };
 
-  console.log(solutions);
-
-
   return (
     <div className="App">
       <section className="hero is-small is-info">
