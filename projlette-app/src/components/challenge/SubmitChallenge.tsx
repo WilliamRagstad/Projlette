@@ -2,12 +2,17 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { auth, db, getCurrentUser } from "../../firebase/firebase";
+import { formatUsername } from "../../util/user";
 import { challengeColor } from "./ChallengeHelper";
 
 export default function SubmitChallenge() {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [createdProblem, setCreatedProblem] = React.useState(null);
-  const user = auth.currentUser;
+  const [currentUser, setCurrentUser] = React.useState<any>(auth.currentUser ? {source: auth.currentUser} : null);
+
+  React.useEffect(() => {
+	getCurrentUser().then(setCurrentUser);
+  },[]);
 
   const randomFrom = (list: string) => {
     return list[Math.floor(Math.random() * list.length)];
@@ -44,10 +49,14 @@ export default function SubmitChallenge() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) {
+    if (!currentUser || !currentUser.source) {
       setErrorMessage("You must be logged in to submit a problem");
       return;
     }
+	if (!currentUser.name) {
+		setErrorMessage("The current user profile has not yet been loaded! Please wait a moment and try again.");
+		return;
+	}
     console.log("Submitting...");
     const title = (document.getElementById("title") as HTMLInputElement).value;
     const description = (
@@ -66,9 +75,9 @@ export default function SubmitChallenge() {
         title: title,
         description: description,
         difficulty: difficulty,
-        createdDate: new Date(),
         tags: tags,
-        author: doc(db, "users/" + user.uid),
+        author: doc(db, "users/" + formatUsername(currentUser.username)),
+		authorName: currentUser.username,
       };
       setDoc(doc(db, "problems-awaiting", id), data)
         .then(() => {
@@ -116,7 +125,7 @@ export default function SubmitChallenge() {
           <br />
           <a href="/">&lt; Return to the challenge list</a>.
         </div>
-      ) : !user ? (
+      ) : (!currentUser || !currentUser.source) ? (
         <div className="has-text-centered">
           <p className="subtitle has-text-danger">
             You must be logged in to submit a challenge!
