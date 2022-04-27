@@ -8,7 +8,7 @@ import {
   renderDifficulty,
   renderTags,
 } from "./ChallengeHelper";
-import { getAuthor, setProp } from "../../util/firebase";
+import { setProp } from "../../util/prop";
 
 export default function AllChallenges() {
   const [challenges, setChallenges] = React.useState([]);

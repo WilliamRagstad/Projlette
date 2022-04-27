@@ -5,7 +5,7 @@ import Wheel from "./Wheel";
 import ProblemBox from "./ProblemBox";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
-import { setProp } from "../../util/firebase";
+import { setProp } from "../../util/prop";
 
 export default function GenerateChallenge() {
   const [allChallenges, setAllChallenges] = useState([]);
