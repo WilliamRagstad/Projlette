@@ -97,7 +97,7 @@ export default function Problem() {
             <h2 className="subtitle">
               By <em>{problem ? problem.authorName : "Unknown Author"}</em> /{" "}
               {problem
-                ? new Date(problem.createdDate).toLocaleDateString()
+                ? problem.created.toDate().toLocaleDateString()
                 : ""}
             </h2>
             <br />
