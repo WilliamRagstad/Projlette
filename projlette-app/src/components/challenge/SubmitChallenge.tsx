@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { auth, db, getCurrentUser } from "../../firebase/firebase";
@@ -78,6 +78,7 @@ export default function SubmitChallenge() {
         tags: tags,
         author: doc(db, "users/" + formatUsername(currentUser.username)),
 		authorName: currentUser.username,
+		created: Timestamp.now(),
       };
       setDoc(doc(db, "problems-awaiting", id), data)
         .then(() => {
