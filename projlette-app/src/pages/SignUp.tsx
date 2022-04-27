@@ -44,8 +44,8 @@ export default function SignUp() {
           <div className="columns is-centered">
             <div className="column is-half">
               <div className="box">
-                <h1 className="title">Sign up with a new account</h1>
-                <p className="subtitle">Enter your credentials to sign up.</p>
+                <h1 className="title">Sign up</h1>
+                <p className="subtitle">Enter your credentials to sign up with a new account.</p>
                 <form>
                   <div className="field">
                     <label className="label">Email</label>

@@ -44,8 +44,8 @@ export default function Login() {
           <div className="columns is-centered">
             <div className="column is-half">
               <div className="box">
-                <h1 className="title">Login to your account</h1>
-                <p className="subtitle">Enter your credentials to login.</p>
+                <h1 className="title">Login</h1>
+                <p className="subtitle">Enter your credentials to login to your account.</p>
                 <form>
                   <div className="field">
                     <label className="label">Email</label>
