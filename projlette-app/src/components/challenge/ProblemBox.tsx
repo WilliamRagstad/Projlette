@@ -1,6 +1,6 @@
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import * as React from "react";
-import { db } from "../../firebase/firebase";
+import { db, getCurrentUser } from "../../firebase/firebase";
 import {
   challengeColor,
   renderApproved,
@@ -9,6 +9,10 @@ import {
 } from "./ChallengeHelper";
 
 export default function ProblemBox({ problem, linkToProblem = false }) {
+  const [user, setUser] = React.useState(null);
+  React.useEffect(() => {
+    getCurrentUser().then(setUser);
+  }, []);
   return (
     <div className="box">
       <div className="columns is-gapless is-mobile">
@@ -34,19 +38,11 @@ export default function ProblemBox({ problem, linkToProblem = false }) {
       <div className="columns is-gapless is-mobile">
         <div className="column">{renderTags(problem.tags)}</div>
         <div className="column has-text-right">
-          This problem {problem.approved ? "is officially" : "is not yet"}{" "}
+          This problem {problem.approved ? "is officially" : "has not been"}{" "}
           approved&nbsp;&nbsp;
           {renderApproved(problem.approved)}
         </div>
       </div>
-      {linkToProblem && (
-        <a
-          className="button is-link is-fullwidth is-rounded mb-4"
-          href={`/problem/${problem.id}`}
-        >
-          Visit Challenge
-        </a>
-      )}
       <div className="action-links is-size-7">
         <a
           href="#"
@@ -81,6 +77,100 @@ export default function ProblemBox({ problem, linkToProblem = false }) {
           <i className="fas fa-flag"></i> Report
         </a>
       </div>
+      {linkToProblem && (
+        <a
+          className="button is-link is-fullwidth is-rounded mt-4"
+          href={`/problem/${problem.id}`}
+        >
+          Visit Challenge
+        </a>
+      )}
+      {user && user.role === "admin" ? (
+        <div className="block mt-5">
+          <hr />
+          <h1 className="title">Admin Controls</h1>
+          <h2 className="subtitle">
+            Manage different aspects of this challenge.
+          </h2>
+          <div className="buttons is-centered">
+            <button
+              className="button is-danger"
+              disabled={problem.approved}
+              onClick={() => {
+                if (problem.approved) {
+                  alert(
+                    "Cannot delete an approved challenge! Unapprove it before preceding."
+                  );
+                  return;
+                }
+                if (
+                  window.confirm(
+                    `Are you sure you want to delete this problem? (${problem.id})`
+                  )
+                ) {
+                  deleteDoc(doc(db, "problems-awaiting", problem.id))
+                    .then(() => {
+                      window.location.reload();
+                    })
+                    .catch(alert);
+                }
+              }}
+            >
+              Delete
+            </button>
+            {problem.approved ? (
+              <button
+                className="button is-warning"
+                onClick={() => {
+					getDoc(doc(db, "problems", problem.id)).then(
+						(oldSnap) => {
+						  if (!oldSnap.exists()) {
+							alert("This challenge could not be found!");
+							return;
+						  }
+						  setDoc(doc(db, "problems-awaiting", problem.id), oldSnap.data())
+							.then(() =>
+							  deleteDoc(doc(db, "problems", problem.id))
+							)
+							.then(() => {
+								window.location.reload();
+							});
+						}
+					  );
+                }}
+              >
+                Unapprove
+              </button>
+            ) : (
+              <button
+                className="button is-success"
+                onClick={() => {
+                  // Create a new document in problems
+                  getDoc(doc(db, "problems-awaiting", problem.id)).then(
+                    (oldSnap) => {
+                      if (!oldSnap.exists()) {
+                        alert("This challenge is already awaiting approval!");
+                        return;
+                      }
+                      setDoc(doc(db, "problems", problem.id), oldSnap.data())
+                        .then(() =>
+                          deleteDoc(doc(db, "problems-awaiting", problem.id))
+                        )
+                        .then(() => {
+							window.location.reload();
+                        });
+                    }
+                  );
+                }}
+              >
+                Approve
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
