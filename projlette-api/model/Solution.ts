@@ -1,4 +1,4 @@
-import { Optional } from "https://deno.land/x/knight@2.3.0/mod.ts";
+import { Optional } from "@knight/knight"; // "https://deno.land/x/knight@2.3.0/mod.ts";
 
 export class Solution {
   githubUrl: string;

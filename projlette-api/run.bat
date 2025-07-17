@@ -1,1 +1,1 @@
-deno run -A --unstable index.ts
+deno run -A index.ts

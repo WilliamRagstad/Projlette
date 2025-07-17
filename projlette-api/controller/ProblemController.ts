@@ -1,13 +1,13 @@
 import {
   badRequest,
   bodyMappingJSON,
-  Context,
+  type Context,
   Controller,
   Endpoint,
   IController,
   ok,
-  Params,
-} from "https://deno.land/x/knight@2.3.0/mod.ts";
+  type Params,
+} from "@knight/knight"; // "https://deno.land/x/knight@2.3.0/mod.ts";
 import Problem from "../model/Problem.ts";
 import ProblemService from "../service/ProblemService.ts";
 
@@ -15,7 +15,7 @@ import ProblemService from "../service/ProblemService.ts";
 export default class ProblemController extends IController {
   private problemService = ProblemService.instance();
 
-  async post({ request, response }: Context) {
+  override async post({ request, response }: Context) {
     response.headers.append("Access-Control-Allow-Origin", "*"); // Allow CORS
     let problem = await bodyMappingJSON(request, Problem);
     try {
@@ -24,7 +24,7 @@ export default class ProblemController extends IController {
       ok(response, problem);
     } catch (error) {
       console.error("Error creating problem: ", error);
-      badRequest(response, error);
+      badRequest(response, error as string);
     }
   }
 

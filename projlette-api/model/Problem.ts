@@ -1,4 +1,5 @@
-import { Optional } from "https://deno.land/x/knight@2.3.0/mod.ts";
+// import { Optional } from "https://deno.land/x/knight@2.3.0/mod.ts";
+import { Optional } from "@knight/knight";
 
 export enum Difficulty {
   Easy = "easy",
@@ -26,17 +27,17 @@ export default class Problem {
     description: string,
     difficulty: Difficulty,
     tags: string[],
-	author: string,
-	approved: boolean = false,
-	createdDate: Date | undefined = undefined
+    author: string,
+    approved: boolean = false,
+    createdDate: Date | undefined = undefined
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.difficulty = difficulty;
     this.tags = tags;
-	this.author = author;
-	this.approved = approved;
-	this.createdDate = createdDate ?? new Date();
+    this.author = author;
+    this.approved = approved;
+    this.createdDate = createdDate ?? new Date();
   }
 }

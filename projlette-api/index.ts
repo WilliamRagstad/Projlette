@@ -1,4 +1,5 @@
-import { Knight } from "https://deno.land/x/knight@2.3.0/mod.ts";
+import { Knight } from "@knight/knight";
+
 
 const app = await Knight.build();
 const port = parseInt(Deno.env.get("PORT") || "8000");

@@ -1,4 +1,4 @@
-import { Service } from "https://deno.land/x/knight@2.3.0/mod.ts";
+import { Service } from "@knight/knight"; //  "https://deno.land/x/knight@2.3.0/mod.ts";
 import Problem, { Difficulty } from "../model/Problem.ts";
 import { readFromLocalFile, writeToLocalFile } from "../util/fileSync.ts";
 
@@ -88,7 +88,7 @@ export default Service(
         throw "Difficulty must be one of the following: easy, medium, hard or expert";
       }
       problem.difficulty = difficulty as Difficulty;
-      problem.tags = problem.tags.map((t) =>
+      problem.tags = problem.tags.map((t: string) =>
         this.stripSpecialCharacters(t.toLowerCase())
       );
       // Check that the tags are all unique

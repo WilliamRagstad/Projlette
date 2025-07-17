@@ -1,4 +1,4 @@
-import { Service } from "https://deno.land/x/knight@2.3.0/mod.ts";
+import { Service } from "@knight/knight"; // "https://deno.land/x/knight@2.3.0/mod.ts";
 import { Solution, Solutions } from "../model/Solution.ts";
 import { readFromLocalFile, writeToLocalFile } from "../util/fileSync.ts";
 

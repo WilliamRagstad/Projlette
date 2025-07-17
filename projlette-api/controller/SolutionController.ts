@@ -1,13 +1,13 @@
 import {
   badRequest,
   bodyMappingJSON,
-  Context,
+  type Context,
   Controller,
   Endpoint,
   IController,
   ok,
-  Params,
-} from "https://deno.land/x/knight@2.3.0/mod.ts";
+  type Params,
+} from "@knight/knight"; // "https://deno.land/x/knight@2.3.0/mod.ts";
 import { Solution } from "../model/Solution.ts";
 import ProblemService from "../service/ProblemService.ts";
 import SolutionService from "../service/SolutionService.ts";
@@ -39,7 +39,7 @@ export default class SolutionController extends IController {
       ok(response, solution);
     } catch (error) {
       console.error("Error adding solution: ", error);
-      badRequest(response, error);
+      badRequest(response, error as string);
     }
   }
 }
