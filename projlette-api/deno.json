@@ -3,11 +3,9 @@
     "dev": "deno run --watch main.ts"
   },
   "imports": {
+    "@knight/knight": "jsr:@knight/knight@^2.4.0",
     "@std/assert": "jsr:@std/assert@1"
   },
-  "links": [
-    "../../Knight"
-  ],
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
