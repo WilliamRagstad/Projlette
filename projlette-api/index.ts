@@ -1,7 +1,4 @@
 import { Knight } from "@knight/knight";
+import LoggingService from "./service/LoggingService.ts";
 
-
-const app = await Knight.build();
-const port = parseInt(Deno.env.get("PORT") || "8000");
-console.log("Server ready on http://localhost:" + port);
-await app.listen({ port });
+Knight.start(Deno.env.get("PORT") || 8000, LoggingService.instance().logger);
