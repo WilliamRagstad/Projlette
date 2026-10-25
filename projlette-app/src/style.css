@@ -1,0 +1,32 @@
+:root {
+  color-scheme: light;
+}
+body {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+main {
+  max-width: 900px;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+nav a {
+  color: white;
+  font-weight: 600;
+}
+.box, form, [role="status"], [role="alert"] {
+  margin-top: 1.5rem;
+}
+h2 {
+  margin-top: 2rem;
+}
+button {
+  margin-top: 0.75rem;
+}
+input, select {
+  max-width: 640px;
+}
