@@ -1,1 +1,21 @@
-{"name":"projlette","private":true,"scripts":{"api":"cd projlette-api && deno task start","migrate":"cd projlette-api && deno task migrate","test:api":"cd projlette-api && deno task test","dev":"npm --prefix projlette-app start","build":"npm --prefix projlette-app run build","test:e2e":"playwright test"},"devDependencies":{"@playwright/test":"1.56.1","@types/node":"22.18.12","deno":"2.5.6"},"engines":{"node":">=22"}}
+{
+  "name": "projlette",
+  "private": true,
+  "scripts": {
+    "api": "cd projlette-api && deno task start",
+    "migrate": "cd projlette-api && deno task migrate",
+    "test:api": "cd projlette-api && deno task test",
+    "dev": "npm --prefix projlette-app start",
+    "build": "npm --prefix projlette-app run build",
+    "test:e2e": "playwright test",
+    "test:restart": "node --test tests/restart.test.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "22.18.12",
+    "deno": "2.5.6"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
